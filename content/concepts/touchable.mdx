@@ -1,0 +1,70 @@
+---
+id: touchable
+title: Touchable Components
+category: events
+order: 11
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/pressable/
+---
+
+# Touchable Components
+
+Phones don't have mouse clicks — they have **taps**. Touchable components turn any part of your app into something the user can tap, press, or hold down.
+
+```tsx
+<Pressable onPress={() => alert("Tapped!")}>
+  <Text>Tap me</Text>
+</Pressable>
+```
+
+## Pressable vs. TouchableOpacity
+
+Modern Expo apps prefer `Pressable` — it is more flexible and actively maintained:
+
+```tsx
+// Modern approach
+<Pressable
+  onPress={handlePress}
+  style={({ pressed }) => [
+    styles.button,
+    pressed && { opacity: 0.7 },
+  ]}
+>
+  <Text>Press me</Text>
+</Pressable>
+
+// Legacy approach (still works)
+<TouchableOpacity onPress={handlePress}>
+  <Text>Touch me</Text>
+</TouchableOpacity>
+```
+
+## Available events
+
+| Event         | When it fires                 |
+| ------------- | ----------------------------- |
+| `onPress`     | Normal tap                    |
+| `onLongPress` | Held down for 500ms+          |
+| `onPressIn`   | Finger touches the element    |
+| `onPressOut`  | Finger lifts from the element |
+
+## Building a custom button
+
+```tsx
+function MyButton({ title, onPress }: { title: string; onPress: () => void }) {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => ({
+        backgroundColor: pressed ? "#2563eb" : "#3b82f6",
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 8,
+      })}
+    >
+      <Text style={{ color: "white", fontWeight: "bold" }}>{title}</Text>
+    </Pressable>
+  );
+}
+```
+
+> **Try this:** Build a button that changes color when pressed using `Pressable`'s `pressed` state.

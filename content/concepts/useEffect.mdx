@@ -1,0 +1,69 @@
+---
+id: useEffect
+title: useEffect Hook
+category: hooks
+order: 7
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# useEffect Hook
+
+`useEffect` tells your component to **do something after it appears on screen** — like loading data from the internet, starting a timer, or listening for updates.
+
+```tsx
+useEffect(() => {
+  fetchUserProfile();
+}, []);
+```
+
+## The dependency array
+
+The second argument controls _when_ the effect runs:
+
+```tsx
+// Runs ONCE after first render (mount)
+useEffect(() => {
+  loadData();
+}, []);
+
+// Runs when `count` changes
+useEffect(() => {
+  document.title = `Count: ${count}`;
+}, [count]);
+
+// Runs after EVERY render (usually a mistake)
+useEffect(() => {
+  // Be careful with this!
+});
+```
+
+## Cleanup functions
+
+Return a function to clean up when the component unmounts or before re-running:
+
+```tsx
+useEffect(() => {
+  const timer = setInterval(() => tick(), 1000);
+
+  // Cleanup: stop the timer
+  return () => clearInterval(timer);
+}, []);
+```
+
+This prevents **memory leaks** — a common source of bugs in mobile apps.
+
+## Common patterns in Expo
+
+```tsx
+// Fetch data on mount
+useEffect(() => {
+  async function load() {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    setItems(data);
+  }
+  load();
+}, []);
+```
+
+> **Try this:** Add a `useEffect` that logs "Component mounted!" when the screen loads, and "Goodbye!" when it unmounts.

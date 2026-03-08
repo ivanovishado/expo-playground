@@ -1,0 +1,52 @@
+---
+id: scrollview
+title: ScrollView Component
+category: basics
+order: 12
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/scrollview/
+---
+
+# ScrollView Component
+
+When your content is taller than the screen, users need to **scroll to see the rest**. `ScrollView` makes that possible — without it, anything below the screen edge is invisible and unreachable.
+
+```tsx
+<ScrollView style={{ flex: 1 }}>
+  <Text>Item 1</Text>
+  <Text>Item 2</Text>
+  <Text>Item 3</Text>
+  {/* ...more items */}
+</ScrollView>
+```
+
+## When to use ScrollView
+
+Use `ScrollView` for a **small, known amount** of content — like a settings page or a form. For long lists (dozens or hundreds of items), use `FlatList` instead.
+
+| Use case              | Component    |
+| --------------------- | ------------ |
+| Settings page         | `ScrollView` |
+| Form with many fields | `ScrollView` |
+| List of 100+ items    | `FlatList`   |
+| Chat messages         | `FlatList`   |
+
+## Horizontal scrolling
+
+```tsx
+<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+  <Image source={img1} style={{ width: 200, height: 150 }} />
+  <Image source={img2} style={{ width: 200, height: 150 }} />
+  <Image source={img3} style={{ width: 200, height: 150 }} />
+</ScrollView>
+```
+
+## Key props
+
+| Prop                           | What it does                             |
+| ------------------------------ | ---------------------------------------- |
+| `horizontal`                   | Scrolls left/right                       |
+| `showsVerticalScrollIndicator` | Shows/hides the scrollbar                |
+| `contentContainerStyle`        | Styles the inner content wrapper         |
+| `keyboardShouldPersistTaps`    | Controls tap behavior with keyboard open |
+
+> **Try this:** Wrap a tall list of Text items in a ScrollView and add `contentContainerStyle={{ padding: 16 }}` for inner spacing.

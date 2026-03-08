@@ -1,0 +1,49 @@
+---
+id: useState
+title: useState Hook
+category: hooks
+order: 3
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# useState Hook
+
+`useState` gives your component a **memory**. Without it, things like counters, text inputs, and toggle switches would reset every time the screen updates.
+
+```tsx
+const [count, setCount] = useState(0);
+```
+
+## The pattern
+
+Every `useState` call returns two things:
+
+1. **The current value** (`count`) — read this to display data.
+2. **A setter function** (`setCount`) — call this to update the value and re-render.
+
+The argument to `useState(0)` is the **initial value**, used only on the first render.
+
+## Updating state
+
+When you call the setter, React schedules a re-render with the new value:
+
+```tsx
+<Button title="Add 1" onPress={() => setCount(count + 1)} />
+```
+
+State updates are **asynchronous** — the new value is available on the _next_ render, not immediately after calling the setter.
+
+## Common patterns in Expo
+
+```tsx
+// Toggle visibility
+const [visible, setVisible] = useState(false);
+
+// Track text input
+const [name, setName] = useState("");
+
+// Store a list
+const [items, setItems] = useState<string[]>([]);
+```
+
+> **Rule of thumb:** If a value changes over time and affects what the user sees, it belongs in state.

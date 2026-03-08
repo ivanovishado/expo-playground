@@ -48,15 +48,17 @@ components/
   SnackPreview.tsx                # snack-sdk iframe wrapper
   ExamplePicker.tsx               # Pre-loaded example buttons
 lib/
-  analyzer.ts                     # Babel AST → DetectedConcept[]
-  detectors/                      # Individual concept detectors
+  analyzer.ts                     # Babel AST → DetectedConcept[] (single merged traversal)
+  categories.ts                   # Centralized category config (colors, labels)
+  detectors/                      # Concept detector visitor factories
     imports.ts
     hooks.ts
     components.ts
     jsx-elements.ts
     styles.ts
     events.ts
-    index.ts                      # Aggregates all detectors
+    index.ts                      # Aggregates all visitor factories
+    utils.ts                      # Shared helpers (toConceptLocation)
   concept-loader.ts               # Loads MDX concept cards
   codemirror-decorations.ts       # DetectedConcept[] → CM decorations
   types.ts                        # Shared types
@@ -78,9 +80,9 @@ content/
 ### Key Patterns
 
 - **Client-heavy architecture** — The main playground page is a client component orchestrating CodeMirror, Snack SDK, and the concept panel. Server components are used for layout and static content only.
-- **AST-driven highlights** — `@babel/parser` parses student code, `@babel/traverse` walks the tree, detectors identify concepts with source locations, and CodeMirror decorations render clickable highlights.
+- **AST-driven highlights** — `@babel/parser` parses student code, detectors export visitor factories that are merged via `traverse.visitors.merge()` into a single AST traversal, and CodeMirror decorations render clickable highlights via a `StateField`/`StateEffect` pattern.
 - **MDX concept cards** — Educational content stored as MDX files with frontmatter (id, title, category, color, expoDocUrl). Loaded via `next-mdx-remote`.
-- **Color-coded categories** — basics=blue, hooks=purple, styling=green, events=orange.
+- **Color-coded categories** — basics=blue, hooks=purple, styling=green, events=orange. Centralized in `lib/categories.ts`; CodeMirror decorations use a generic `.cm-concept` class with `--concept-color` CSS variable.
 - **Debounced analysis** — Code analysis and Snack preview updates are debounced (~1s) on editor changes.
 
 ## 4. Build & Dev Commands
@@ -132,6 +134,9 @@ Use Context7 to fetch **up-to-date documentation and code examples** for any lib
 | UI design review and compliance | `web-design-guidelines` |
 | React Native / Expo concepts (for content) | `vercel-react-native-skills` |
 | Using shadcn/ui components | `shadcn` |
+| Researching docs, APIs, or web content | `firecrawl:firecrawl-cli` |
+| Creating hooks to prevent bad patterns | `hookify:hookify` |
+| Analyzing codebase for automation setup | `claude-code-setup:claude-automation-recommender` |
 
 ## 8. Skills by Category
 
@@ -159,6 +164,20 @@ Use Context7 to fetch **up-to-date documentation and code examples** for any lib
 |-------|-------------|
 | `vercel-react-native-skills` | React Native / Expo best practices (for concept card content) |
 
+### Workflow (2)
+
+| Skill | Description |
+|-------|-------------|
+| `firecrawl:firecrawl-cli` | Web research, documentation lookup, scraping (replaces WebFetch/WebSearch) |
+
+### Tooling (3)
+
+| Skill | Description |
+|-------|-------------|
+| `skill-creator:skill-creator` | Create, modify, and test agent skills |
+| `hookify:hookify` | Create hooks to prevent bad patterns from conversation analysis |
+| `claude-code-setup:claude-automation-recommender` | Analyze codebase for Claude Code automation opportunities |
+
 ## 9. Workflow Chains
 
 Common skill sequences for end-to-end workflows:
@@ -169,6 +188,9 @@ Layout Work:       tailwind-css-patterns → frontend-design → web-design-guid
 Concept Content:   vercel-react-native-skills → (write MDX)
 Performance:       vercel-react-best-practices → next-cache-components
 UI Polish:         frontend-design → web-design-guidelines
+Code Quality:      (implement feature) → check Quality Gates
+Research:          firecrawl:firecrawl-cli → (implement with findings)
+New Skill:         skill-creator:skill-creator
 ```
 
 ## 10. Subagent Delegation Guidelines
@@ -206,8 +228,9 @@ At the beginning of every subagent prompt, include:
 | `components/CodeEditor.tsx` | CodeMirror 6 + clickable decorations |
 | `components/ConceptPanel.tsx` | Concept walkthrough + MDX rendering |
 | `components/SnackPreview.tsx` | snack-sdk iframe wrapper |
-| `lib/analyzer.ts` | Babel AST → DetectedConcept[] |
-| `lib/detectors/index.ts` | Aggregates all concept detectors |
+| `lib/analyzer.ts` | Babel AST → DetectedConcept[] (single merged traversal) |
+| `lib/categories.ts` | Centralized category config (colors, labels) |
+| `lib/detectors/index.ts` | Aggregates all visitor factories |
 | `lib/codemirror-decorations.ts` | DetectedConcept[] → CM decorations |
 | `lib/types.ts` | Shared TypeScript types |
 | `content/concepts/*.mdx` | Educational concept cards |

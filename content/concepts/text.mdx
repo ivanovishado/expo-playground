@@ -1,0 +1,51 @@
+---
+id: text
+title: Text Component
+category: basics
+order: 9
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/text/
+---
+
+# Text Component
+
+Want to show words on screen? You **must** wrap them in a `Text` component. React Native will not display any text unless it is inside a `<Text>` tag.
+
+```tsx
+<Text style={{ fontSize: 18, fontWeight: "bold" }}>Welcome to Expo!</Text>
+```
+
+## Nesting Text
+
+`Text` components can be nested to apply different styles to parts of a sentence:
+
+```tsx
+<Text style={{ fontSize: 16 }}>
+  This is <Text style={{ fontWeight: "bold" }}>bold</Text> and{" "}
+  <Text style={{ color: "blue" }}>blue</Text>.
+</Text>
+```
+
+Nested `Text` inherits the parent's style, so you only override what changes.
+
+## Useful props
+
+| Prop            | What it does                            |
+| --------------- | --------------------------------------- |
+| `numberOfLines` | Truncates text with "..." after N lines |
+| `selectable`    | Lets users copy the text                |
+| `onPress`       | Makes the text tappable                 |
+
+```tsx
+<Text numberOfLines={2} style={{ lineHeight: 22 }}>
+  This is a long paragraph that will be truncated after two lines with an
+  ellipsis at the end...
+</Text>
+```
+
+## Text vs. web typography
+
+- No CSS `font-family` stack — use Expo's font loading instead.
+- No `<h1>`–`<h6>` — style headings manually with `fontSize` and `fontWeight`.
+- All text **must** be inside a `<Text>` component.
+
+> **Try this:** Create a paragraph with one word in bold and another in a different color using nested Text components.

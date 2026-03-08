@@ -1,0 +1,67 @@
+---
+id: flexbox
+title: Flexbox Layout
+category: styling
+order: 15
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/flexbox/
+---
+
+# Flexbox Layout
+
+Flexbox is how you **arrange things on screen** in React Native — centering content, creating rows and columns, adding space between items. It is the one and only layout tool you need to learn.
+
+```tsx
+<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  <Text>Perfectly centered</Text>
+</View>
+```
+
+## Key differences from web CSS
+
+| Property        | Web default      | React Native default |
+| --------------- | ---------------- | -------------------- |
+| `flexDirection` | `row`            | `column`             |
+| `alignContent`  | `stretch`        | `flex-start`         |
+| Units           | px, rem, %, etc. | Unitless numbers     |
+
+## The essential properties
+
+**Container properties** (on the parent View):
+
+```tsx
+<View
+  style={{
+    flex: 1, // Take all available space
+    flexDirection: "row", // Lay out children horizontally
+    justifyContent: "space-between", // Space along main axis
+    alignItems: "center", // Align along cross axis
+    gap: 12, // Space between children
+  }}
+>
+  <Text>Left</Text>
+  <Text>Right</Text>
+</View>
+```
+
+**Child properties:**
+
+```tsx
+<View style={{ flex: 1 }}>   {/* Takes 1/3 of space */}</View>
+<View style={{ flex: 2 }}>   {/* Takes 2/3 of space */}</View>
+```
+
+## Common layouts
+
+```tsx
+// Centered content
+{ flex: 1, justifyContent: "center", alignItems: "center" }
+
+// Header + content + footer
+<View style={{ flex: 1 }}>
+  <View style={{ height: 60 }}><Text>Header</Text></View>
+  <View style={{ flex: 1 }}><Text>Content</Text></View>
+  <View style={{ height: 60 }}><Text>Footer</Text></View>
+</View>
+```
+
+> **Try this:** Create a row of three colored boxes that share the space equally using `flex: 1` on each.

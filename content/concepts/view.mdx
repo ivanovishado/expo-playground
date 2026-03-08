@@ -1,0 +1,55 @@
+---
+id: view
+title: View Component
+category: basics
+order: 8
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/view/
+---
+
+# View Component
+
+`View` is an **invisible box** that groups and positions other elements on screen. It does not display anything by itself — think of it as a shelf that holds and arranges your content.
+
+```tsx
+<View style={styles.container}>
+  <Text>Inside a View</Text>
+</View>
+```
+
+## View vs. div
+
+If you know HTML, think of `View` as the React Native equivalent of `<div>`. But there are key differences:
+
+| HTML `<div>`            | React Native `<View>`   |
+| ----------------------- | ----------------------- |
+| Uses CSS for layout     | Uses Flexbox by default |
+| Block layout by default | Flex column by default  |
+| Renders text directly   | Cannot contain raw text |
+
+**Important:** You cannot place raw text inside a `View` — always wrap text in a `<Text>` component.
+
+```tsx
+// This will crash
+<View>Hello</View>
+
+// This works
+<View><Text>Hello</Text></View>
+```
+
+## Nesting views
+
+Build complex layouts by nesting Views:
+
+```tsx
+<View style={{ flex: 1 }}>
+  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+    <Text>Left</Text>
+    <Text>Right</Text>
+  </View>
+  <View style={{ flex: 1, alignItems: "center" }}>
+    <Text>Centered content</Text>
+  </View>
+</View>
+```
+
+> **Try this:** Create a layout with a header row at the top and centered content below using nested Views.

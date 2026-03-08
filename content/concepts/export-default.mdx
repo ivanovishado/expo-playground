@@ -1,0 +1,49 @@
+---
+id: export-default
+title: Default Exports
+category: basics
+order: 5
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Default Exports
+
+`export default` tells Expo **"this is the main component in this file — put it on screen."** Every screen in your app needs exactly one default export.
+
+```tsx
+export default function HomeScreen() {
+  return (
+    <View>
+      <Text>Home</Text>
+    </View>
+  );
+}
+```
+
+## How it works
+
+Each file can have only **one** default export. When another file imports it, it can use any name:
+
+```tsx
+// These all import the same component
+import HomeScreen from "./HomeScreen";
+import MyPage from "./HomeScreen";
+import Whatever from "./HomeScreen";
+```
+
+Compare this with **named exports**, where the name must match exactly:
+
+```tsx
+// Named export — name must match
+export function helper() {}
+import { helper } from "./utils";
+```
+
+## Why this matters in Expo
+
+Expo Router uses the file system for navigation. The **default export** of each file in the `app/` directory becomes a screen:
+
+- `app/index.tsx` → default export renders at `/`
+- `app/settings.tsx` → default export renders at `/settings`
+
+> **Try this:** Remove `export default` from a screen component and watch what happens — Expo won't know what to render!

@@ -1,0 +1,45 @@
+---
+id: jsx
+title: JSX Elements
+category: basics
+order: 4
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# JSX Elements
+
+JSX lets you **describe what your app looks like** right inside your JavaScript code. It looks like HTML, but React Native turns it into real mobile app elements.
+
+```tsx
+<View style={styles.container}>
+  <Text>Hello, world!</Text>
+</View>
+```
+
+## JSX is not HTML
+
+Although JSX looks like HTML, it compiles to regular JavaScript function calls. In React Native, you use components like `View` and `Text` instead of `div` and `p`.
+
+| Web HTML  | React Native JSX |
+| --------- | ---------------- |
+| `<div>`   | `<View>`         |
+| `<p>`     | `<Text>`         |
+| `<img>`   | `<Image>`        |
+| `<input>` | `<TextInput>`    |
+
+## Embedding expressions
+
+Wrap any JavaScript expression in curly braces to embed it in JSX:
+
+```tsx
+<Text>You have {items.length} items</Text>
+<Text>{isLoggedIn ? "Welcome back!" : "Please sign in"}</Text>
+```
+
+## Key rules
+
+- Every JSX tree must have a **single root element** (or use `<>...</>` fragments).
+- **Self-closing tags** are required for elements with no children: `<Image />`.
+- Use `style` objects instead of CSS class names in React Native.
+
+> **Tip:** Think of JSX as a template that describes _what_ to show. React figures out _how_ to update the screen efficiently.

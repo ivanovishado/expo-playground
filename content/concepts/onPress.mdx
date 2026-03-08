@@ -1,0 +1,64 @@
+---
+id: onPress
+title: onPress Event
+category: events
+order: 16
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/pressable/
+---
+
+# onPress Event
+
+`onPress` is what makes things **happen when a user taps**. Tap a button to add an item, tap a checkbox to mark it done — `onPress` is behind all of it.
+
+```tsx
+<Pressable onPress={() => setCount(count + 1)}>
+  <Text>Tap to increment: {count}</Text>
+</Pressable>
+```
+
+## Where onPress works
+
+Not every component supports `onPress`. Use it on:
+
+| Component          | Notes                        |
+| ------------------ | ---------------------------- |
+| `Pressable`        | Preferred for custom buttons |
+| `TouchableOpacity` | Legacy, still common         |
+| `Button`           | Simple built-in button       |
+| `Text`             | Makes text tappable          |
+
+`View` does **not** support `onPress` — wrap content in `Pressable` instead.
+
+## Passing functions
+
+You can pass an inline function or a named handler:
+
+```tsx
+// Inline
+<Pressable onPress={() => alert("Hi!")}>
+
+// Named handler (cleaner for complex logic)
+function handlePress() {
+  setVisible(true);
+  logAnalytics("button_tap");
+}
+
+<Pressable onPress={handlePress}>
+```
+
+## Common mistake
+
+Don't _call_ the function — pass it as a reference:
+
+```tsx
+// Wrong — runs immediately on render
+<Pressable onPress={handlePress()}>
+
+// Correct — runs when tapped
+<Pressable onPress={handlePress}>
+
+// Correct — passing arguments
+<Pressable onPress={() => handleDelete(item.id)}>
+```
+
+> **Try this:** Add an `onPress` to a `Pressable` that toggles a boolean state between "ON" and "OFF".

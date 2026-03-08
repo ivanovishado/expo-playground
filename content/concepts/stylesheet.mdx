@@ -1,0 +1,57 @@
+---
+id: stylesheet
+title: StyleSheet.create
+category: styling
+order: 13
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/stylesheet/
+---
+
+# StyleSheet.create
+
+`StyleSheet.create` is where you define **how things look** — colors, sizes, spacing, and fonts. Think of it as a recipe book for your app's visual design, kept neatly at the bottom of the file.
+
+```tsx
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#1a1a1a",
+  },
+});
+```
+
+## Why use StyleSheet.create?
+
+1. **Performance** — Styles are created once and reused, not rebuilt on every render.
+2. **Validation** — Catches invalid property names at creation time.
+3. **Organization** — Styles are co-located at the bottom of the file, easy to find.
+
+## Applying styles
+
+Reference styles by name on the `style` prop:
+
+```tsx
+<View style={styles.container}>
+  <Text style={styles.title}>Hello!</Text>
+</View>
+```
+
+## Combining styles
+
+Pass an array to merge multiple style objects. Later styles override earlier ones:
+
+```tsx
+<Text style={[styles.title, { color: "red" }]}>Override color</Text>
+
+<View style={[styles.container, isActive && styles.active]}>
+  <Text>Conditional style</Text>
+</View>
+```
+
+> **Try this:** Create a `StyleSheet` with `container`, `heading`, and `paragraph` styles, then apply them to a simple layout.

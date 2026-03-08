@@ -1,0 +1,61 @@
+---
+id: inline-style
+title: Inline Styles
+category: styling
+order: 14
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/style/
+---
+
+# Inline Styles
+
+Inline styles let you apply **styling directly on an element** — quick and convenient for one-off tweaks or styles that change based on user interaction.
+
+```tsx
+<View style={{ flex: 1, backgroundColor: "#fff" }}>
+  <Text style={{ fontSize: 20, fontWeight: "bold" }}>Hello!</Text>
+</View>
+```
+
+## Inline vs. StyleSheet
+
+| Feature     | Inline `style={{}}`       | `StyleSheet.create`     |
+| ----------- | ------------------------- | ----------------------- |
+| Setup       | None                      | Define object at bottom |
+| Performance | New object each render    | Created once, reused    |
+| Best for    | Dynamic or one-off styles | Reusable, static styles |
+
+## When inline styles make sense
+
+Use inline styles for **dynamic values** that depend on props or state:
+
+```tsx
+function ProgressBar({ percent }: { percent: number }) {
+  return (
+    <View style={{ height: 8, backgroundColor: "#e5e7eb", borderRadius: 4 }}>
+      <View
+        style={{
+          width: `${percent}%`,
+          height: "100%",
+          backgroundColor: "#3b82f6",
+          borderRadius: 4,
+        }}
+      />
+    </View>
+  );
+}
+```
+
+## The double curly brace
+
+The double `{{ }}` can be confusing at first:
+
+- **Outer braces**: JSX expression container (JavaScript inside JSX)
+- **Inner braces**: A JavaScript object literal
+
+```tsx
+//       JSX expr   JS object
+//       vvvvvvvvvvvvvvvvvvvvvvv
+<Text style={{ color: "blue" }}>Blue text</Text>
+```
+
+> **Try this:** Refactor an inline style into a `StyleSheet.create` call and notice how the component becomes cleaner.

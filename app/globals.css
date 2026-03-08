@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme {
+  --color-concept-basics: #3b82f6;
+  --color-concept-hooks: #8b5cf6;
+  --color-concept-styling: #22c55e;
+  --color-concept-events: #f97316;
+
+  --color-concept-basics-bg: #3b82f620;
+  --color-concept-hooks-bg: #8b5cf620;
+  --color-concept-styling-bg: #22c55e20;
+  --color-concept-events-bg: #f9731620;
+
+  --color-concept-basics-bg-active: #3b82f640;
+  --color-concept-hooks-bg-active: #8b5cf640;
+  --color-concept-styling-bg-active: #22c55e40;
+  --color-concept-events-bg-active: #f9731640;
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+}
+
+/* ─── CodeMirror concept highlight decorations ─── */
+.cm-concept {
+  cursor: pointer;
+  border-radius: 2px;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+  background-color: color-mix(in srgb, var(--concept-color) 12%, transparent);
+  border-bottom: 2px solid var(--concept-color);
+}
+.cm-concept:hover {
+  background-color: color-mix(in srgb, var(--concept-color) 25%, transparent);
+}
+.cm-concept.cm-concept-active {
+  background-color: color-mix(in srgb, var(--concept-color) 25%, transparent);
+  box-shadow: 0 0 0 1px var(--concept-color);
+}
+
+/* ─── CodeMirror theme overrides ─── */
+.cm-editor {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.cm-editor .cm-gutters {
+  background-color: #fafafa;
+  border-right: 1px solid #e5e7eb;
+  color: #9ca3af;
+  font-size: 12px;
+}
+.cm-editor .cm-activeLineGutter {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+.cm-editor .cm-activeLine {
+  background-color: #f9fafb;
+}
+.cm-editor .cm-cursor {
+  border-left-color: #3b82f6;
+}
+.cm-editor .cm-selectionBackground {
+  background-color: #dbeafe !important;
+}
+
+/* ─── Concept panel MDX prose styling ─── */
+.concept-prose h1,
+.concept-prose h2,
+.concept-prose h3 {
+  font-weight: 600;
+  color: #1f2937;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+.concept-prose h1 {
+  font-size: 1.125rem;
+}
+.concept-prose h2 {
+  font-size: 1rem;
+}
+.concept-prose h3 {
+  font-size: 0.875rem;
+}
+.concept-prose p {
+  margin-bottom: 0.75em;
+}
+.concept-prose ul,
+.concept-prose ol {
+  padding-left: 1.25em;
+  margin-bottom: 0.75em;
+}
+.concept-prose li {
+  margin-bottom: 0.25em;
+}
+.concept-prose li::marker {
+  color: #9ca3af;
+}
+.concept-prose code {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  background-color: #f3f4f6;
+  border-radius: 4px;
+  padding: 0.15em 0.35em;
+  color: #374151;
+}
+.concept-prose pre {
+  background-color: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.75em 1em;
+  overflow-x: auto;
+  margin-bottom: 0.75em;
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+.concept-prose pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+.concept-prose a {
+  color: #3b82f6;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.concept-prose a:hover {
+  color: #2563eb;
+}
+.concept-prose strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+.concept-prose blockquote {
+  border-left: 3px solid #e5e7eb;
+  padding-left: 1em;
+  color: #6b7280;
+  margin-bottom: 0.75em;
+  font-style: italic;
+}
+
+/* ─── Responsive min-width warning ─── */
+.min-width-warning {
+  display: none;
+}
+@media (max-width: 900px) {
+  .playground-grid {
+    display: none !important;
+  }
+  .min-width-warning {
+    display: flex;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #ffffff;
+  overflow: hidden;
+}

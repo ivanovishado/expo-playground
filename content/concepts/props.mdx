@@ -1,0 +1,52 @@
+---
+id: props
+title: Props
+category: basics
+order: 6
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Props
+
+Props (short for "properties") let you **customize a component from the outside** — just like filling in the blanks on a form. Pass different props to the same component to make it show different things.
+
+```tsx
+<Text style={styles.title}>Hello!</Text>
+<Image source={{ uri: "https://example.com/photo.jpg" }} />
+```
+
+## Reading props
+
+A component receives all its props as a single object. Use destructuring for clean code:
+
+```tsx
+function Badge({ label, color }: { label: string; color: string }) {
+  return (
+    <View style={{ backgroundColor: color, borderRadius: 12, padding: 8 }}>
+      <Text style={{ color: "white" }}>{label}</Text>
+    </View>
+  );
+}
+
+// Usage
+<Badge label="New" color="#3b82f6" />;
+```
+
+## Common built-in props
+
+React Native components accept many props out of the box:
+
+| Component     | Key Props                              |
+| ------------- | -------------------------------------- |
+| `<Text>`      | `style`, `numberOfLines`               |
+| `<View>`      | `style`                                |
+| `<Image>`     | `source`, `style`, `resizeMode`        |
+| `<TextInput>` | `value`, `onChangeText`, `placeholder` |
+
+## Rules to remember
+
+- Props are **read-only** — a component should never modify its own props.
+- Data flows **one direction**: parent to child.
+- Use **state** (not props) for values that change over time.
+
+> **Try this:** Create a `Greeting` component that takes a `name` prop and displays "Hello, {name}!".

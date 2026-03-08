@@ -1,0 +1,62 @@
+---
+id: onChangeText
+title: onChangeText Event
+category: events
+order: 17
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/textinput/
+---
+
+# onChangeText Event
+
+`onChangeText` is how your app **knows what the user is typing**. Every keystroke or deletion fires this function with the complete, updated text.
+
+```tsx
+const [name, setName] = useState("");
+
+<TextInput value={name} onChangeText={setName} placeholder="Enter your name" />;
+```
+
+## Controlled vs. uncontrolled inputs
+
+The pattern above is a **controlled input** — React owns the state:
+
+```tsx
+// Controlled: value + onChangeText together
+<TextInput value={name} onChangeText={setName} />
+```
+
+This is the recommended pattern because:
+
+- You always know the current value
+- You can validate, transform, or limit input
+- The UI stays in sync with your state
+
+## Transforming input
+
+Since `onChangeText` gives you the raw string, you can transform it before saving:
+
+```tsx
+// Force uppercase
+<TextInput
+  value={code}
+  onChangeText={(text) => setCode(text.toUpperCase())}
+  placeholder="Enter code"
+/>
+
+// Limit to 10 characters
+<TextInput
+  value={pin}
+  onChangeText={(text) => setPin(text.slice(0, 10))}
+  placeholder="Enter PIN"
+/>
+```
+
+## Web comparison
+
+| Web                  | React Native           |
+| -------------------- | ---------------------- |
+| `onChange` event     | `onChangeText` string  |
+| `e.target.value`     | Direct string argument |
+| `<input type="...">` | `TextInput` props      |
+
+> **Try this:** Create a search input that filters a list of items as the user types using `onChangeText`.

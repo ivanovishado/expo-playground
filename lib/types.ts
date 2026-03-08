@@ -6,6 +6,15 @@
  * 0-indexed happens in `codemirror-decorations.ts`.
  */
 
+export type Locale = "en" | "es";
+
+export const SUPPORTED_LOCALES: { code: Locale; label: string }[] = [
+  { code: "en", label: "EN" },
+  { code: "es", label: "ES" },
+];
+
+export const DEFAULT_LOCALE: Locale = "en";
+
 export type ConceptCategory = "basics" | "hooks" | "styling" | "events";
 
 export interface ConceptLocation {

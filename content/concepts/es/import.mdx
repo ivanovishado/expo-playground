@@ -1,0 +1,34 @@
+---
+id: import
+title: Sentencias Import
+category: basics
+order: 1
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Sentencias Import
+
+Antes de poder usar un componente como un boton o un campo de texto, necesitas **traerlo a tu archivo**. Eso es lo que hace `import` — carga las piezas que necesitas de otros paquetes.
+
+```tsx
+import { View, Text } from "react-native";
+import { useState } from "react";
+```
+
+## Como funcionan los imports
+
+Cada aplicacion React Native esta construida a partir de piezas pequenas y reutilizables. La sentencia `import` le dice a JavaScript cuales piezas necesitas en el archivo actual.
+
+- **Imports con nombre** usan llaves: `{ View, Text }` — seleccionas exportaciones especificas del modulo.
+- **Imports por defecto** no tienen llaves: `import React from "react"` — el modulo eligio una exportacion "principal".
+
+## Por que esto importa en Expo
+
+Expo proporciona docenas de paquetes (`expo-camera`, `expo-location`, etc.). Cada uno se importa por separado para que tu app solo empaquete lo que realmente usa — manteniendo tu app pequena y rapida.
+
+```tsx
+// Solo el componente Camera se empaqueta
+import { Camera } from "expo-camera";
+```
+
+> **Tip:** Si ves un error de "module not found", probablemente necesitas instalar el paquete primero con `npx expo install`.

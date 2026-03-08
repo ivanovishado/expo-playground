@@ -63,14 +63,19 @@ lib/
   codemirror-decorations.ts       # DetectedConcept[] → CM decorations
   types.ts                        # Shared types
 content/
-  concepts/                       # ~15 MDX files sourced from Expo docs
-    import.mdx
-    component-function.mdx
-    jsx.mdx
-    useState.mdx
-    useEffect.mdx
-    stylesheet.mdx
-    ...
+  concepts/                       # MDX concept cards, organized by locale
+    en/                           # English (default) — 17 MDX files
+      import.mdx
+      component-function.mdx
+      jsx.mdx
+      useState.mdx
+      useEffect.mdx
+      stylesheet.mdx
+      ...
+    es/                           # Spanish translations (partial — falls back to English)
+      import.mdx
+      useState.mdx
+      view.mdx
   examples/                       # Pre-loaded example apps
     counter.ts
     todo-list.ts
@@ -232,8 +237,9 @@ At the beginning of every subagent prompt, include:
 | `lib/categories.ts` | Centralized category config (colors, labels) |
 | `lib/detectors/index.ts` | Aggregates all visitor factories |
 | `lib/codemirror-decorations.ts` | DetectedConcept[] → CM decorations |
-| `lib/types.ts` | Shared TypeScript types |
-| `content/concepts/*.mdx` | Educational concept cards |
+| `lib/types.ts` | Shared TypeScript types (includes Locale, SUPPORTED_LOCALES) |
+| `components/LanguageToggle.tsx` | Locale switcher (segmented control) |
+| `content/concepts/{locale}/*.mdx` | Educational concept cards (per locale, English fallback) |
 | `content/examples/*.ts` | Pre-loaded example apps |
 
 ## 12. Quality Gates

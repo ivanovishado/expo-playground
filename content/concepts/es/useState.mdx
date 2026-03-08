@@ -1,0 +1,49 @@
+---
+id: useState
+title: Hook useState
+category: hooks
+order: 3
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Hook useState
+
+`useState` le da a tu componente una **memoria**. Sin el, cosas como contadores, campos de texto y botones de alternancia se reiniciarian cada vez que la pantalla se actualiza.
+
+```tsx
+const [count, setCount] = useState(0);
+```
+
+## El patron
+
+Cada llamada a `useState` devuelve dos cosas:
+
+1. **El valor actual** (`count`) — leelo para mostrar datos.
+2. **Una funcion setter** (`setCount`) — llamala para actualizar el valor y volver a renderizar.
+
+El argumento de `useState(0)` es el **valor inicial**, usado solo en el primer renderizado.
+
+## Actualizando el estado
+
+Cuando llamas al setter, React programa un nuevo renderizado con el nuevo valor:
+
+```tsx
+<Button title="Sumar 1" onPress={() => setCount(count + 1)} />
+```
+
+Las actualizaciones de estado son **asincronas** — el nuevo valor esta disponible en el _siguiente_ renderizado, no inmediatamente despues de llamar al setter.
+
+## Patrones comunes en Expo
+
+```tsx
+// Alternar visibilidad
+const [visible, setVisible] = useState(false);
+
+// Rastrear entrada de texto
+const [name, setName] = useState("");
+
+// Almacenar una lista
+const [items, setItems] = useState<string[]>([]);
+```
+
+> **Regla general:** Si un valor cambia con el tiempo y afecta lo que el usuario ve, pertenece al estado.

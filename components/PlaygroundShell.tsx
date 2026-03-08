@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
-import type { ConceptCard, DetectedConcept } from "@/lib/types";
+import type { ConceptCard, DetectedConcept, Locale } from "@/lib/types";
+import { DEFAULT_LOCALE } from "@/lib/types";
 import { analyzeCode } from "@/lib/analyzer";
 import examples from "@/content/examples";
 import CodeEditor from "./CodeEditor";
@@ -9,21 +10,25 @@ import ConceptPanel from "./ConceptPanel";
 import ConceptList from "./ConceptList";
 import SnackPreview from "./SnackPreview";
 import ExamplePicker from "./ExamplePicker";
+import LanguageToggle from "./LanguageToggle";
 
 interface PlaygroundShellProps {
-  conceptCards: ConceptCard[];
+  conceptCardsByLocale: Record<Locale, ConceptCard[]>;
 }
 
 export default function PlaygroundShell({
-  conceptCards,
+  conceptCardsByLocale,
 }: PlaygroundShellProps) {
+  const [locale, setLocale] = useState<Locale>(DEFAULT_LOCALE);
+
   const cardsMap = useMemo(() => {
     const map = new Map<string, ConceptCard>();
-    for (const card of conceptCards) {
+    const cards = conceptCardsByLocale[locale] ?? [];
+    for (const card of cards) {
       map.set(card.id, card);
     }
     return map;
-  }, [conceptCards]);
+  }, [conceptCardsByLocale, locale]);
 
   const initialCode = examples[0]?.code ?? "";
 
@@ -125,6 +130,9 @@ export default function PlaygroundShell({
                 {navigableConcepts.length}
               </span>
             )}
+            <div className="ml-auto">
+              <LanguageToggle locale={locale} onChange={setLocale} />
+            </div>
           </div>
           <ConceptList
             concepts={detectedConcepts}

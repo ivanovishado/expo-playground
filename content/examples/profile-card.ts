@@ -13,14 +13,13 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.card}>
         <Image
-          source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
+          source={{ uri: 'https://github.com/ivanovishado.png' }}
           style={styles.avatar}
         />
-        <Text style={styles.name}>Alex Rivera</Text>
-        <Text style={styles.role}>Mobile Developer</Text>
+        <Text style={styles.name}>Ivan Galaviz</Text>
+        <Text style={styles.role}>Software Engineer</Text>
         <Text style={styles.bio}>
-          Building beautiful cross-platform apps with React Native and Expo.
-          Passionate about clean UI and smooth animations.
+          Building with coding agents.
         </Text>
         <View style={styles.statsRow}>
           <View style={styles.stat}>

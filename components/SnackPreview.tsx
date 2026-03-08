@@ -22,12 +22,25 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
   const [error, setError] = useState<SnackError | null>(null);
   const [mounted, setMounted] = useState(false);
   const [debugLog, setDebugLog] = useState<string[]>([]);
+  const fullDebugLog = useRef<string[]>([]);
+  const [copied, setCopied] = useState(false);
 
   const addDebug = useCallback((msg: string) => {
-    setDebugLog((prev) => [
-      ...prev.slice(-19),
-      `${new Date().toISOString().slice(11, 23)} ${msg}`,
-    ]);
+    const line = `${new Date().toISOString().slice(11, 23)} ${msg}`;
+    fullDebugLog.current.push(line);
+    setDebugLog((prev) => [...prev.slice(-29), line]);
+  }, []);
+
+  const copyDebugLog = useCallback(() => {
+    navigator.clipboard
+      .writeText(fullDebugLog.current.join("\n"))
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch(() => {
+        /* clipboard unavailable */
+      });
   }, []);
 
   // SSR guard
@@ -40,17 +53,10 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
     if (!mounted) return;
     addDebug(`page origin: ${window.location.origin}`);
     function onMessage(e: MessageEvent) {
-      // Filter out React DevTools extension noise
-      if (
-        typeof e.data === "object" &&
-        e.data?.source?.startsWith("react-devtools")
-      )
-        return;
-      const data =
-        typeof e.data === "string"
-          ? e.data.slice(0, 120)
-          : JSON.stringify(e.data).slice(0, 120);
-      addDebug(`msg from=${e.origin} data=${data}`);
+      // Filter out browser extension noise
+      const raw = typeof e.data === "string" ? e.data : JSON.stringify(e.data);
+      if (raw.includes("react-devtools") || raw.includes("webpackHot")) return;
+      addDebug(`msg from=${e.origin} data=${raw.slice(0, 200)}`);
     }
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
@@ -169,7 +175,18 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
     <div className="flex h-full flex-col">
       {debugLog.length > 0 && (
         <div className="max-h-40 overflow-y-auto border-b border-yellow-300 bg-yellow-50 px-3 py-2 font-mono text-[10px] leading-relaxed text-yellow-900">
-          <p className="mb-1 font-bold">DEBUG</p>
+          <div className="mb-1 flex items-center justify-between">
+            <p className="font-bold">
+              DEBUG ({fullDebugLog.current.length} entries)
+            </p>
+            <button
+              type="button"
+              onClick={copyDebugLog}
+              className="rounded bg-yellow-200 px-2 py-0.5 text-[10px] font-medium text-yellow-800 hover:bg-yellow-300"
+            >
+              {copied ? "Copied!" : "Copy All"}
+            </button>
+          </div>
           {debugLog.map((line, i) => (
             <p key={i}>{line}</p>
           ))}

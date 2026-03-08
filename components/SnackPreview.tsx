@@ -96,12 +96,18 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
     });
   }, [code]);
 
-  // Wire iframe contentWindow to webPreviewRef
+  // Wire iframe contentWindow to webPreviewRef and re-deliver code.
+  // The SDK's initial sendAsync fires before the iframe renders, so
+  // webPreviewRef.current is still null and the message is lost.
+  // Re-sending here ensures the iframe receives the code once it's ready.
   const handleIframeLoad = useCallback(() => {
     if (iframeRef.current?.contentWindow) {
       webPreviewRef.current = iframeRef.current.contentWindow;
+      snackRef.current?.updateFiles({
+        "App.tsx": { type: "CODE", contents: code },
+      });
     }
-  }, []);
+  }, [code]);
 
   if (!mounted) {
     return (
@@ -140,7 +146,7 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
           onLoad={handleIframeLoad}
           className="flex-1 border-0 bg-white"
           title="Expo Snack Preview"
-          allow="accelerometer; gyroscope"
+          allow="accelerometer; gyroscope; screen-wake-lock"
           sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
         />
       ) : (

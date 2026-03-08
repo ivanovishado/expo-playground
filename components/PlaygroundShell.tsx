@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import {
+  Group,
+  Panel,
+  Separator,
+  usePanelRef,
+  useGroupRef,
+} from "react-resizable-panels";
 import type { ConceptCard, DetectedConcept, Locale } from "@/lib/types";
 import { DEFAULT_LOCALE } from "@/lib/types";
 import { analyzeCode } from "@/lib/analyzer";
@@ -11,6 +18,44 @@ import ConceptList from "./ConceptList";
 import SnackPreview from "./SnackPreview";
 import ExamplePicker from "./ExamplePicker";
 import LanguageToggle from "./LanguageToggle";
+
+const LAYOUT_STORAGE_KEY = "playground-layout";
+const PREVIEW_COLLAPSED_SIZE = 36;
+
+function PanelHeader({
+  title,
+  children,
+}: {
+  title: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-2 border-b border-gray-100 px-4 py-2.5">
+      <span className="text-xs font-semibold tracking-wide text-gray-400 uppercase">
+        {title}
+      </span>
+      {children}
+    </div>
+  );
+}
+
+function ChevronIcon({ direction }: { direction: "left" | "right" }) {
+  const d = direction === "left" ? "M10 4L6 8l4 4" : "M6 4l4 4-4 4";
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d={d} />
+    </svg>
+  );
+}
 
 interface PlaygroundShellProps {
   conceptCardsByLocale: Record<Locale, ConceptCard[]>;
@@ -37,6 +82,43 @@ export default function PlaygroundShell({
     () => analyzeCode(initialCode)
   );
   const [activeConceptId, setActiveConceptId] = useState<string | null>(null);
+
+  // Resizable panels
+  const groupRef = useGroupRef();
+  const previewPanelRef = usePanelRef();
+  const [isPreviewCollapsed, setIsPreviewCollapsed] = useState(false);
+
+  // Restore saved layout after hydration (avoids SSR mismatch)
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(LAYOUT_STORAGE_KEY);
+      if (saved && groupRef.current) {
+        groupRef.current.setLayout(JSON.parse(saved));
+      }
+    } catch {
+      // Ignore storage errors
+    }
+  }, [groupRef]);
+
+  const handleLayoutChanged = useCallback((layout: Record<string, number>) => {
+    try {
+      localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(layout));
+    } catch {
+      // Ignore storage errors
+    }
+  }, []);
+
+  const handlePreviewResize = useCallback(() => {
+    setIsPreviewCollapsed(previewPanelRef.current?.isCollapsed() ?? false);
+  }, [previewPanelRef]);
+
+  const togglePreview = useCallback(() => {
+    if (previewPanelRef.current?.isCollapsed()) {
+      previewPanelRef.current.expand();
+    } else {
+      previewPanelRef.current?.collapse();
+    }
+  }, [previewPanelRef]);
 
   // Debounced AST analysis on code changes
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -118,71 +200,112 @@ export default function PlaygroundShell({
       </div>
 
       {/* Main 3-column layout */}
-      <div className="playground-grid grid h-screen grid-cols-[320px_1fr_380px]">
+      <Group
+        orientation="horizontal"
+        className="playground-grid"
+        style={{ height: "100vh" }}
+        groupRef={groupRef}
+        onLayoutChanged={handleLayoutChanged}
+      >
         {/* Left: Concept walkthrough */}
-        <aside className="flex flex-col overflow-hidden border-r border-gray-200 bg-white">
-          <div className="flex items-center gap-2 border-b border-gray-100 px-4 py-2.5">
-            <span className="text-xs font-semibold tracking-wide text-gray-400 uppercase">
-              Concepts
-            </span>
-            {navigableConcepts.length > 0 && (
-              <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-500">
-                {navigableConcepts.length}
-              </span>
-            )}
-            <div className="ml-auto">
-              <LanguageToggle locale={locale} onChange={setLocale} />
-            </div>
-          </div>
-          <ConceptList
-            concepts={detectedConcepts}
-            activeConceptId={activeConceptId}
-            onConceptClick={handleConceptClick}
-            cards={cardsMap}
-          />
-          <div className="flex-1 overflow-y-auto">
-            <ConceptPanel
-              card={activeCard}
-              onPrev={handlePrev}
-              onNext={handleNext}
-              hasPrev={activeIndex > 0}
-              hasNext={activeIndex < navigableConcepts.length - 1}
-            />
-          </div>
-        </aside>
-
-        {/* Center: Code editor */}
-        <main className="flex flex-col overflow-hidden border-r border-gray-200">
-          <div className="flex items-center gap-3 border-b border-gray-100 bg-white px-4 py-2.5">
-            <span className="text-xs font-semibold tracking-wide text-gray-400 uppercase">
-              Editor
-            </span>
-            <div className="h-3.5 w-px bg-gray-200" />
-            <ExamplePicker examples={examples} onSelect={setCode} />
-          </div>
-          <div className="flex-1 overflow-hidden">
-            <CodeEditor
-              code={code}
-              onChange={setCode}
+        <Panel
+          id="concepts"
+          className="relative"
+          defaultSize="25%"
+          minSize={200}
+        >
+          <aside className="absolute inset-0 flex flex-col overflow-hidden bg-white">
+            <PanelHeader title="Concepts">
+              {navigableConcepts.length > 0 && (
+                <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-500">
+                  {navigableConcepts.length}
+                </span>
+              )}
+              <div className="ml-auto">
+                <LanguageToggle locale={locale} onChange={setLocale} />
+              </div>
+            </PanelHeader>
+            <ConceptList
               concepts={detectedConcepts}
               activeConceptId={activeConceptId}
               onConceptClick={handleConceptClick}
+              cards={cardsMap}
             />
-          </div>
-        </main>
+            <div className="flex-1 overflow-y-auto">
+              <ConceptPanel
+                card={activeCard}
+                onPrev={handlePrev}
+                onNext={handleNext}
+                hasPrev={activeIndex > 0}
+                hasNext={activeIndex < navigableConcepts.length - 1}
+              />
+            </div>
+          </aside>
+        </Panel>
+
+        <Separator className="panel-resize-handle" />
+
+        {/* Center: Code editor */}
+        <Panel id="editor" className="relative" defaultSize="45%" minSize={300}>
+          <main className="absolute inset-0 flex flex-col overflow-hidden">
+            <PanelHeader title="Editor">
+              <div className="h-3.5 w-px bg-gray-200" />
+              <ExamplePicker examples={examples} onSelect={setCode} />
+            </PanelHeader>
+            <div className="flex-1 overflow-hidden">
+              <CodeEditor
+                code={code}
+                onChange={setCode}
+                concepts={detectedConcepts}
+                activeConceptId={activeConceptId}
+                onConceptClick={handleConceptClick}
+              />
+            </div>
+          </main>
+        </Panel>
+
+        <Separator className="panel-resize-handle" />
 
         {/* Right: Live preview */}
-        <aside className="flex flex-col overflow-hidden bg-white">
-          <div className="border-b border-gray-100 px-4 py-2.5">
-            <span className="text-xs font-semibold tracking-wide text-gray-400 uppercase">
-              Preview
-            </span>
-          </div>
-          <div className="flex-1 overflow-hidden">
-            <SnackPreview code={code} />
-          </div>
-        </aside>
-      </div>
+        <Panel
+          id="preview"
+          className="relative"
+          panelRef={previewPanelRef}
+          defaultSize="30%"
+          minSize={200}
+          collapsible
+          collapsedSize={PREVIEW_COLLAPSED_SIZE}
+          onResize={handlePreviewResize}
+        >
+          {isPreviewCollapsed && (
+            <div className="absolute inset-0 flex items-center justify-center border-l border-gray-200 bg-white">
+              <button
+                onClick={togglePreview}
+                className="rounded p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+                title="Expand preview"
+              >
+                <ChevronIcon direction="left" />
+              </button>
+            </div>
+          )}
+          <aside
+            className={`absolute inset-0 flex flex-col overflow-hidden bg-white ${isPreviewCollapsed ? "hidden" : ""}`}
+          >
+            <PanelHeader title="Preview">
+              <button
+                onClick={togglePreview}
+                className="ml-auto rounded p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+                title="Collapse preview"
+              >
+                <ChevronIcon direction="right" />
+              </button>
+            </PanelHeader>
+            <div className="flex-1 overflow-hidden">
+              <SnackPreview code={code} />
+            </div>
+          </aside>
+        </Panel>
+      </Group>
     </>
   );
 }

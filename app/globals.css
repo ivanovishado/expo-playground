@@ -164,6 +164,42 @@
   background-color: #f9fafb;
 }
 
+/* ─── Panel resize handles ─── */
+.panel-resize-handle {
+  width: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 150ms ease;
+}
+.panel-resize-handle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background-color: #e5e7eb;
+  transform: translateX(-50%);
+}
+.panel-resize-handle::after {
+  content: "";
+  width: 2px;
+  height: 32px;
+  border-radius: 1px;
+  background-color: transparent;
+  transition:
+    background-color 150ms ease,
+    height 150ms ease;
+  z-index: 1;
+}
+.panel-resize-handle:hover::after,
+.panel-resize-handle:active::after {
+  background-color: #3b82f6;
+  height: 48px;
+}
+
 /* ─── Responsive min-width warning ─── */
 .min-width-warning {
   display: none;

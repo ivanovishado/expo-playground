@@ -28,6 +28,7 @@ Annotated Expo Playground is an **educational tool that helps beginner students 
 | Editor | CodeMirror 6 (`@uiw/react-codemirror`) | 4.25 |
 | AST Analysis | `@babel/parser` + `@babel/traverse` | 7.29 |
 | Live Preview | `snack-sdk` | 6.6 |
+| Panels | `react-resizable-panels` (drag-to-resize, collapsible) | 1 |
 | Content | `next-mdx-remote` (MDX concept cards) | 6 |
 | Deploy | GitHub Pages (static export) | — |
 | Linting | ESLint + Prettier | — |

@@ -40,7 +40,7 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
         name: "Expo Playground",
         description: "Live preview from the Annotated Expo Playground",
         files: {
-          "App.js": { type: "CODE", contents: code },
+          "App.tsx": { type: "CODE", contents: code },
         },
         dependencies: {
           "react-native-paper": { version: "~5.12.0" },
@@ -92,7 +92,7 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
   useEffect(() => {
     if (!snackRef.current) return;
     snackRef.current.updateFiles({
-      "App.js": { type: "CODE", contents: code },
+      "App.tsx": { type: "CODE", contents: code },
     });
   }, [code]);
 

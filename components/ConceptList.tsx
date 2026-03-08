@@ -67,14 +67,14 @@ export default function ConceptList({
 
   return (
     <div className="flex flex-wrap gap-1.5 border-b border-gray-100 px-4 py-3">
-      {uniqueConcepts.map((concept) => {
+      {uniqueConcepts.map((concept, index) => {
         const isActive = concept.conceptId === activeConceptId;
         const hasCard = cards.has(concept.conceptId);
         const styles = CATEGORY_STYLES[concept.category] ?? DEFAULT_STYLE;
 
         return (
           <button
-            key={concept.conceptId}
+            key={concept.conceptId ?? `concept-${index}`}
             type="button"
             onClick={() => onConceptClick(concept.conceptId)}
             disabled={!hasCard}

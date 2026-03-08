@@ -21,6 +21,14 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
   const [previewURL, setPreviewURL] = useState<string | null>(null);
   const [error, setError] = useState<SnackError | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [debugLog, setDebugLog] = useState<string[]>([]);
+
+  const addDebug = useCallback((msg: string) => {
+    setDebugLog((prev) => [
+      ...prev.slice(-19),
+      `${new Date().toISOString().slice(11, 23)} ${msg}`,
+    ]);
+  }, []);
 
   // SSR guard
   useEffect(() => {
@@ -34,7 +42,9 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
     let unsubscribe: (() => void) | undefined;
 
     async function initSnack() {
+      addDebug("importing snack-sdk…");
       const { Snack } = await import("snack-sdk");
+      addDebug("snack-sdk imported");
 
       const snack = new Snack({
         name: "Expo Playground",
@@ -49,16 +59,20 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
         webPreviewRef: webPreviewRef as { current: Window | null },
         codeChangesDelay: 1000,
       });
+      addDebug("Snack instance created");
 
       snackRef.current = snack;
 
       unsubscribe = snack.addStateListener((state) => {
+        const clients = Object.values(state.connectedClients);
+        addDebug(
+          `state: online=${String(state.online)} url=${state.webPreviewURL ? "yes" : "no"} clients=${String(clients.length)} transports=${Object.keys(state.transports).join(",") || "none"}`
+        );
+
         if (state.webPreviewURL) {
           setPreviewURL(state.webPreviewURL);
         }
 
-        // Check connected clients for errors
-        const clients = Object.values(state.connectedClients);
         const clientWithError = clients.find((c) => c.status === "error");
         if (clientWithError?.error) {
           setError(clientWithError.error);
@@ -67,15 +81,24 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
         }
       });
 
+      addDebug("calling setOnline(true)…");
       snack.setOnline(true);
+      addDebug("setOnline(true) done");
 
       const initialState = snack.getState();
+      addDebug(
+        `initial: online=${String(initialState.online)} url=${initialState.webPreviewURL ?? "null"}`
+      );
       if (initialState.webPreviewURL) {
         setPreviewURL(initialState.webPreviewURL);
       }
     }
 
-    initSnack();
+    initSnack().catch((err: unknown) => {
+      addDebug(
+        `initSnack ERROR: ${err instanceof Error ? err.message : String(err)}`
+      );
+    });
 
     return () => {
       unsubscribe?.();
@@ -101,13 +124,17 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
   // webPreviewRef.current is still null and the message is lost.
   // Re-sending here ensures the iframe receives the code once it's ready.
   const handleIframeLoad = useCallback(() => {
+    addDebug("iframe onLoad fired");
     if (iframeRef.current?.contentWindow) {
       webPreviewRef.current = iframeRef.current.contentWindow;
+      addDebug("webPreviewRef set, re-sending code…");
       snackRef.current?.updateFiles({
         "App.tsx": { type: "CODE", contents: code },
       });
+    } else {
+      addDebug("iframe onLoad but contentWindow is null");
     }
-  }, [code]);
+  }, [code, addDebug]);
 
   if (!mounted) {
     return (
@@ -119,6 +146,14 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
 
   return (
     <div className="flex h-full flex-col">
+      {debugLog.length > 0 && (
+        <div className="max-h-40 overflow-y-auto border-b border-yellow-300 bg-yellow-50 px-3 py-2 font-mono text-[10px] leading-relaxed text-yellow-900">
+          <p className="mb-1 font-bold">DEBUG</p>
+          {debugLog.map((line, i) => (
+            <p key={i}>{line}</p>
+          ))}
+        </div>
+      )}
       {error && (
         <div className="border-b border-red-200 bg-red-50 px-3 py-2.5 transition-all duration-200">
           <div className="flex items-start gap-2">

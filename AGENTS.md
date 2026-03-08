@@ -29,7 +29,7 @@ Annotated Expo Playground is an **educational tool that helps beginner students 
 | AST Analysis | `@babel/parser` + `@babel/traverse` | 7.29 |
 | Live Preview | `snack-sdk` | 6.6 |
 | Content | `next-mdx-remote` (MDX concept cards) | 6 |
-| Deploy | Vercel | — |
+| Deploy | GitHub Pages (static export) | — |
 | Linting | ESLint + Prettier | — |
 
 ## 3. Architecture

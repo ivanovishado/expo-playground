@@ -8,9 +8,107 @@ interface SnackPreviewProps {
 }
 
 /**
+ * Build a Snack URL that opens the current code in snack.expo.dev.
+ * Uses `files` param so the file is named App.tsx (not a raw `code` blob).
+ */
+function buildSnackUrl(code: string): string {
+  const params = new URLSearchParams({
+    name: "Expo Playground",
+    platform: "web",
+    files: JSON.stringify({ "App.tsx": { type: "CODE", contents: code } }),
+  });
+  return `https://snack.expo.dev/?${params.toString()}`;
+}
+
+function DeployedPreviewFallback({ code }: { code: string }) {
+  return (
+    <div className="flex h-full flex-col items-center justify-center bg-gray-50 px-6 py-8">
+      <div className="w-full max-w-xs text-center">
+        {/* Snack icon */}
+        <svg
+          className="mx-auto mb-4 h-10 w-10 text-blue-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={1.5}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+          />
+        </svg>
+
+        <h3 className="mb-2 text-sm font-semibold text-gray-800">
+          Preview available on Snack
+        </h3>
+
+        <p className="mb-5 text-xs leading-relaxed text-gray-500">
+          Live preview requires a local development server. You can open your
+          code directly in Expo Snack instead.
+        </p>
+
+        <a
+          href={buildSnackUrl(code)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-lg bg-blue-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-600"
+        >
+          {/* External link icon */}
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+            />
+          </svg>
+          Open in Snack
+        </a>
+
+        {/* Separator */}
+        <div className="my-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-gray-200" />
+          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
+            or
+          </span>
+          <div className="h-px flex-1 bg-gray-200" />
+        </div>
+
+        <p className="mb-3 text-xs text-gray-500">
+          For live preview, clone the repo and run locally:
+        </p>
+
+        <a
+          href="https://github.com/ivanovishado/expo-playground"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-500 transition-colors hover:text-blue-600"
+        >
+          {/* GitHub icon */}
+          <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+          </svg>
+          ivanovishado/expo-playground
+        </a>
+      </div>
+    </div>
+  );
+}
+
+/**
  * Renders a live Expo Snack preview in an iframe.
  * Creates a Snack SDK session on mount, updates code via the SDK's
  * built-in debounce, and displays errors from the connected preview.
+ *
+ * On deployed sites (non-localhost), shows a fallback UI with a
+ * link to open the code in Expo Snack, since the Snack runtime
+ * only allows localhost origins for postMessage communication.
  */
 export default function SnackPreview({ code }: SnackPreviewProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -21,57 +119,23 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
   const [previewURL, setPreviewURL] = useState<string | null>(null);
   const [error, setError] = useState<SnackError | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [debugLog, setDebugLog] = useState<string[]>([]);
-  const fullDebugLog = useRef<string[]>([]);
-  const [copied, setCopied] = useState(false);
 
-  const addDebug = useCallback((msg: string) => {
-    const line = `${new Date().toISOString().slice(11, 23)} ${msg}`;
-    fullDebugLog.current.push(line);
-    setDebugLog((prev) => [...prev.slice(-29), line]);
-  }, []);
-
-  const copyDebugLog = useCallback(() => {
-    navigator.clipboard
-      .writeText(fullDebugLog.current.join("\n"))
-      .then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      })
-      .catch(() => {
-        /* clipboard unavailable */
-      });
-  }, []);
+  const isLocalhost = mounted && window.location.hostname === "localhost";
 
   // SSR guard
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Debug: log ALL postMessage events from any iframe
+  // Initialize Snack session (localhost only)
   useEffect(() => {
     if (!mounted) return;
-    addDebug(`page origin: ${window.location.origin}`);
-    function onMessage(e: MessageEvent) {
-      // Filter out browser extension noise
-      const raw = typeof e.data === "string" ? e.data : JSON.stringify(e.data);
-      if (raw.includes("react-devtools") || raw.includes("webpackHot")) return;
-      addDebug(`msg from=${e.origin} data=${raw.slice(0, 200)}`);
-    }
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, [mounted, addDebug]);
-
-  // Initialize Snack session
-  useEffect(() => {
-    if (!mounted) return;
+    if (window.location.hostname !== "localhost") return;
 
     let unsubscribe: (() => void) | undefined;
 
     async function initSnack() {
-      addDebug("importing snack-sdk…");
       const { Snack } = await import("snack-sdk");
-      addDebug("snack-sdk imported");
 
       const snack = new Snack({
         name: "Expo Playground",
@@ -86,20 +150,15 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
         webPreviewRef: webPreviewRef as { current: Window | null },
         codeChangesDelay: 1000,
       });
-      addDebug("Snack instance created");
 
       snackRef.current = snack;
 
       unsubscribe = snack.addStateListener((state) => {
-        const clients = Object.values(state.connectedClients);
-        addDebug(
-          `state: online=${String(state.online)} url=${state.webPreviewURL ? "yes" : "no"} clients=${String(clients.length)} transports=${Object.keys(state.transports).join(",") || "none"}`
-        );
-
         if (state.webPreviewURL) {
           setPreviewURL(state.webPreviewURL);
         }
 
+        const clients = Object.values(state.connectedClients);
         const clientWithError = clients.find((c) => c.status === "error");
         if (clientWithError?.error) {
           setError(clientWithError.error);
@@ -108,23 +167,16 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
         }
       });
 
-      addDebug("calling setOnline(true)…");
       snack.setOnline(true);
-      addDebug("setOnline(true) done");
 
       const initialState = snack.getState();
-      addDebug(
-        `initial: online=${String(initialState.online)} url=${initialState.webPreviewURL ?? "null"}`
-      );
       if (initialState.webPreviewURL) {
         setPreviewURL(initialState.webPreviewURL);
       }
     }
 
-    initSnack().catch((err: unknown) => {
-      addDebug(
-        `initSnack ERROR: ${err instanceof Error ? err.message : String(err)}`
-      );
+    initSnack().catch(() => {
+      // Snack initialization failed silently — preview will show loading state
     });
 
     return () => {
@@ -151,17 +203,13 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
   // webPreviewRef.current is still null and the message is lost.
   // Re-sending here ensures the iframe receives the code once it's ready.
   const handleIframeLoad = useCallback(() => {
-    addDebug("iframe onLoad fired");
     if (iframeRef.current?.contentWindow) {
       webPreviewRef.current = iframeRef.current.contentWindow;
-      addDebug("webPreviewRef set, re-sending code…");
       snackRef.current?.updateFiles({
         "App.tsx": { type: "CODE", contents: code },
       });
-    } else {
-      addDebug("iframe onLoad but contentWindow is null");
     }
-  }, [code, addDebug]);
+  }, [code]);
 
   if (!mounted) {
     return (
@@ -171,27 +219,12 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
     );
   }
 
+  if (!isLocalhost) {
+    return <DeployedPreviewFallback code={code} />;
+  }
+
   return (
     <div className="flex h-full flex-col">
-      {debugLog.length > 0 && (
-        <div className="max-h-40 overflow-y-auto border-b border-yellow-300 bg-yellow-50 px-3 py-2 font-mono text-[10px] leading-relaxed text-yellow-900">
-          <div className="mb-1 flex items-center justify-between">
-            <p className="font-bold">
-              DEBUG ({fullDebugLog.current.length} entries)
-            </p>
-            <button
-              type="button"
-              onClick={copyDebugLog}
-              className="rounded bg-yellow-200 px-2 py-0.5 text-[10px] font-medium text-yellow-800 hover:bg-yellow-300"
-            >
-              {copied ? "Copied!" : "Copy All"}
-            </button>
-          </div>
-          {debugLog.map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
-        </div>
-      )}
       {error && (
         <div className="border-b border-red-200 bg-red-50 px-3 py-2.5 transition-all duration-200">
           <div className="flex items-start gap-2">
@@ -220,6 +253,7 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
           className="flex-1 border-0 bg-white"
           title="Expo Snack Preview"
           allow="accelerometer; gyroscope; screen-wake-lock"
+          sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
         />
       ) : (
         <div className="flex flex-1 items-center justify-center bg-gray-50/50">

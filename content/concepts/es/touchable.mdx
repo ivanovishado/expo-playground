@@ -1,0 +1,70 @@
+---
+id: touchable
+title: Componentes Touchable
+category: events
+order: 11
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/pressable/
+---
+
+# Componentes Touchable
+
+Los teléfonos no tienen clicks de mouse — tienen **toques**. Los componentes Touchable convierten cualquier parte de tu app en algo que el usuario puede tocar, presionar o mantener presionado.
+
+```tsx
+<Pressable onPress={() => alert("¡Tocaste!")}>
+  <Text>Tócame</Text>
+</Pressable>
+```
+
+## Pressable vs. TouchableOpacity
+
+Las apps modernas de Expo prefieren `Pressable` — es más flexible y tiene mantenimiento activo:
+
+```tsx
+// Enfoque moderno
+<Pressable
+  onPress={handlePress}
+  style={({ pressed }) => [
+    styles.button,
+    pressed && { opacity: 0.7 },
+  ]}
+>
+  <Text>Presiónalo</Text>
+</Pressable>
+
+// Enfoque legacy (todavía funciona)
+<TouchableOpacity onPress={handlePress}>
+  <Text>Tócame</Text>
+</TouchableOpacity>
+```
+
+## Eventos disponibles
+
+| Evento        | Cuándo se dispara                 |
+| ------------- | --------------------------------- |
+| `onPress`     | Toque normal                      |
+| `onLongPress` | Presión sostenida por 500ms o más |
+| `onPressIn`   | El dedo toca el elemento          |
+| `onPressOut`  | El dedo se levanta del elemento   |
+
+## Crear un botón personalizado
+
+```tsx
+function MyButton({ title, onPress }: { title: string; onPress: () => void }) {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => ({
+        backgroundColor: pressed ? "#2563eb" : "#3b82f6",
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 8,
+      })}
+    >
+      <Text style={{ color: "white", fontWeight: "bold" }}>{title}</Text>
+    </Pressable>
+  );
+}
+```
+
+> **Intenta esto:** Construye un botón que cambie de color al presionarlo, usando el estado `pressed` de `Pressable`.

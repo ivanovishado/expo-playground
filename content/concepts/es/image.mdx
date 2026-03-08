@@ -1,0 +1,58 @@
+---
+id: image
+title: Componente Image
+category: basics
+order: 10
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/image/
+---
+
+# Componente Image
+
+`Image` coloca una **imagen en pantalla** — ya sea desde una URL o un archivo de tu proyecto. A diferencia de las imágenes en la web, siempre necesitas indicarle a React Native el ancho y alto.
+
+```tsx
+<Image
+  source={{ uri: "https://picsum.photos/200" }}
+  style={{ width: 200, height: 200, borderRadius: 12 }}
+/>
+```
+
+## Fuentes de imagen
+
+Hay dos formas de proporcionar una imagen:
+
+```tsx
+// Imagen remota (requiere width + height)
+<Image
+  source={{ uri: "https://example.com/photo.jpg" }}
+  style={{ width: 100, height: 100 }}
+/>
+
+// Archivo local (las dimensiones se infieren)
+<Image source={require("./assets/logo.png")} />
+```
+
+## Modos de redimensionamiento
+
+Controla cómo la imagen se ajusta a su contenedor:
+
+| `resizeMode` | Comportamiento                      |
+| ------------ | ----------------------------------- |
+| `"cover"`    | Llena el área, puede recortar       |
+| `"contain"`  | Cabe completa, puede dejar espacios |
+| `"stretch"`  | Se estira para llenar exactamente   |
+| `"center"`   | Se centra en su tamaño original     |
+
+```tsx
+<Image
+  source={{ uri: avatarUrl }}
+  style={{ width: 80, height: 80, borderRadius: 40 }}
+  resizeMode="cover"
+/>
+```
+
+## Tip de rendimiento
+
+Para listas con muchas imágenes, usa `expo-image` en lugar del `Image` integrado — soporta caché, placeholders con blur y transiciones animadas.
+
+> **Intenta esto:** Muestra un avatar circular usando `borderRadius` con la mitad del ancho de la imagen.

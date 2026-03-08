@@ -1,6 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { compileMDX } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import type { ConceptCard, ConceptCategory, Locale } from "@/lib/types";
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from "@/lib/types";
 
@@ -24,7 +25,10 @@ export async function loadConceptCard(
 
     const { content, frontmatter } = await compileMDX<ConceptFrontmatter>({
       source,
-      options: { parseFrontmatter: true },
+      options: {
+        parseFrontmatter: true,
+        mdxOptions: { remarkPlugins: [remarkGfm] },
+      },
     });
 
     return {

@@ -21,6 +21,11 @@
       "sourceType": "github",
       "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
     },
+    "mexican-spanish": {
+      "source": "ivanovishado/agent-skills",
+      "sourceType": "github",
+      "computedHash": "ec8ea6717fea43f788f7df6dcbd147ed7d78a7000f2a6dcac7edaa5206adfaeb"
+    },
     "next-best-practices": {
       "source": "vercel-labs/next-skills",
       "sourceType": "github",

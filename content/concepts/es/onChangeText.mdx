@@ -1,0 +1,66 @@
+---
+id: onChangeText
+title: Evento onChangeText
+category: events
+order: 17
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/textinput/
+---
+
+# Evento onChangeText
+
+`onChangeText` es como tu app **sabe lo que el usuario está tecleando**. Cada vez que escribe o borra un carácter, esta función se ejecuta con el texto completo actualizado.
+
+```tsx
+const [name, setName] = useState("");
+
+<TextInput
+  value={name}
+  onChangeText={setName}
+  placeholder="Escribe tu nombre"
+/>;
+```
+
+## Inputs controlados vs. no controlados
+
+El patrón de arriba es un **input controlado** — React es dueño del estado:
+
+```tsx
+// Controlado: value + onChangeText juntos
+<TextInput value={name} onChangeText={setName} />
+```
+
+Este es el patrón recomendado porque:
+
+- Siempre sabes el valor actual
+- Puedes validar, transformar o limitar lo que se escribe
+- La interfaz se mantiene sincronizada con tu estado
+
+## Transformar la entrada
+
+Como `onChangeText` te da el texto crudo, puedes transformarlo antes de guardarlo:
+
+```tsx
+// Forzar mayúsculas
+<TextInput
+  value={code}
+  onChangeText={(text) => setCode(text.toUpperCase())}
+  placeholder="Escribe el código"
+/>
+
+// Limitar a 10 caracteres
+<TextInput
+  value={pin}
+  onChangeText={(text) => setPin(text.slice(0, 10))}
+  placeholder="Escribe tu PIN"
+/>
+```
+
+## Comparación con la web
+
+| Web                  | React Native          |
+| -------------------- | --------------------- |
+| Evento `onChange`    | String `onChangeText` |
+| `e.target.value`     | Argumento directo     |
+| `<input type="...">` | Props de `TextInput`  |
+
+> **Intenta esto:** Crea un campo de búsqueda que filtre una lista de elementos conforme el usuario escribe, usando `onChangeText`.

@@ -1,0 +1,52 @@
+---
+id: props
+title: Props
+category: basics
+order: 6
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Props
+
+Los props (abreviatura de "properties") te permiten **personalizar un componente desde afuera** — como llenar los campos de un formulario. Pásale distintos props al mismo componente para que muestre cosas diferentes.
+
+```tsx
+<Text style={styles.title}>¡Hola!</Text>
+<Image source={{ uri: "https://example.com/photo.jpg" }} />
+```
+
+## Cómo leer los props
+
+Un componente recibe todos sus props como un solo objeto. Usa desestructuración para un código más limpio:
+
+```tsx
+function Badge({ label, color }: { label: string; color: string }) {
+  return (
+    <View style={{ backgroundColor: color, borderRadius: 12, padding: 8 }}>
+      <Text style={{ color: "white" }}>{label}</Text>
+    </View>
+  );
+}
+
+// Uso
+<Badge label="Nuevo" color="#3b82f6" />;
+```
+
+## Props integrados comunes
+
+Los componentes de React Native aceptan muchos props de fábrica:
+
+| Componente    | Props principales                      |
+| ------------- | -------------------------------------- |
+| `<Text>`      | `style`, `numberOfLines`               |
+| `<View>`      | `style`                                |
+| `<Image>`     | `source`, `style`, `resizeMode`        |
+| `<TextInput>` | `value`, `onChangeText`, `placeholder` |
+
+## Reglas para recordar
+
+- Los props son **de solo lectura** — un componente nunca debe modificar sus propios props.
+- Los datos fluyen en **una sola dirección**: del padre al hijo.
+- Usa **estado** (no props) para valores que cambian con el tiempo.
+
+> **Intenta esto:** Crea un componente `Greeting` que reciba un prop `name` y muestre "¡Hola, {name}!".

@@ -1,0 +1,61 @@
+---
+id: inline-style
+title: Estilos en Línea
+category: styling
+order: 14
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/style/
+---
+
+# Estilos en Línea
+
+Los estilos en línea te permiten aplicar **estilos directamente en un elemento** — rápido y práctico para ajustes puntuales o estilos que cambian según la interacción del usuario.
+
+```tsx
+<View style={{ flex: 1, backgroundColor: "#fff" }}>
+  <Text style={{ fontSize: 20, fontWeight: "bold" }}>¡Hola!</Text>
+</View>
+```
+
+## En línea vs. StyleSheet
+
+| Aspecto     | En línea `style={{}}`            | `StyleSheet.create`               |
+| ----------- | -------------------------------- | --------------------------------- |
+| Preparación | Ninguna                          | Definir objeto al final           |
+| Rendimiento | Objeto nuevo en cada renderizado | Se crea una vez y se reutiliza    |
+| Ideal para  | Estilos dinámicos o puntuales    | Estilos reutilizables y estáticos |
+
+## ¿Cuándo convienen los estilos en línea?
+
+Úsalos para **valores dinámicos** que dependen de props o estado:
+
+```tsx
+function ProgressBar({ percent }: { percent: number }) {
+  return (
+    <View style={{ height: 8, backgroundColor: "#e5e7eb", borderRadius: 4 }}>
+      <View
+        style={{
+          width: `${percent}%`,
+          height: "100%",
+          backgroundColor: "#3b82f6",
+          borderRadius: 4,
+        }}
+      />
+    </View>
+  );
+}
+```
+
+## Las dobles llaves
+
+Las dobles llaves `{{ }}` pueden confundir al principio:
+
+- **Llaves externas**: contenedor de expresión JSX (JavaScript dentro de JSX)
+- **Llaves internas**: un objeto literal de JavaScript
+
+```tsx
+//       expr JSX   objeto JS
+//       vvvvvvvvvvvvvvvvvvvvvvv
+<Text style={{ color: "blue" }}>Texto azul</Text>
+```
+
+> **Intenta esto:** Refactoriza un estilo en línea a una llamada de `StyleSheet.create` y nota cómo el componente queda más limpio.

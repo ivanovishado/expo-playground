@@ -1,0 +1,64 @@
+---
+id: onPress
+title: Evento onPress
+category: events
+order: 16
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/pressable/
+---
+
+# Evento onPress
+
+`onPress` es lo que hace que las cosas **ocurran cuando el usuario toca**. Tocar un botón para agregar un elemento, tocar un checkbox para marcarlo — detrás de todo eso está `onPress`.
+
+```tsx
+<Pressable onPress={() => setCount(count + 1)}>
+  <Text>Toca para incrementar: {count}</Text>
+</Pressable>
+```
+
+## ¿Dónde funciona onPress?
+
+No todos los componentes soportan `onPress`. Úsalo en:
+
+| Componente         | Notas                         |
+| ------------------ | ----------------------------- |
+| `Pressable`        | Preferido para botones custom |
+| `TouchableOpacity` | Legacy, pero todavía se usa   |
+| `Button`           | Botón sencillo integrado      |
+| `Text`             | Hace el texto tocable         |
+
+`View` **no** soporta `onPress` — envuelve el contenido en un `Pressable`.
+
+## Pasar funciones
+
+Puedes pasar una función en línea o un handler con nombre:
+
+```tsx
+// En línea
+<Pressable onPress={() => alert("¡Hola!")}>
+
+// Handler con nombre (más limpio para lógica compleja)
+function handlePress() {
+  setVisible(true);
+  logAnalytics("button_tap");
+}
+
+<Pressable onPress={handlePress}>
+```
+
+## Error común
+
+No _llames_ a la función — pásala como referencia:
+
+```tsx
+// Mal — se ejecuta de inmediato al renderizar
+<Pressable onPress={handlePress()}>
+
+// Bien — se ejecuta cuando el usuario toca
+<Pressable onPress={handlePress}>
+
+// Bien — para pasar argumentos
+<Pressable onPress={() => handleDelete(item.id)}>
+```
+
+> **Intenta esto:** Agrega un `onPress` a un `Pressable` que alterne un estado booleano entre "ON" y "OFF".

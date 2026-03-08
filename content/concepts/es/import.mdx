@@ -8,27 +8,27 @@ expoDocUrl: https://docs.expo.dev/get-started/start-developing/
 
 # Sentencias Import
 
-Antes de poder usar un componente como un boton o un campo de texto, necesitas **traerlo a tu archivo**. Eso es lo que hace `import` — carga las piezas que necesitas de otros paquetes.
+Para usar un componente como un botón o un campo de texto, primero necesitas **traerlo a tu archivo**. Para eso sirve `import`: carga las piezas que necesitas de otros paquetes.
 
 ```tsx
 import { View, Text } from "react-native";
 import { useState } from "react";
 ```
 
-## Como funcionan los imports
+## ¿Cómo funcionan los imports?
 
-Cada aplicacion React Native esta construida a partir de piezas pequenas y reutilizables. La sentencia `import` le dice a JavaScript cuales piezas necesitas en el archivo actual.
+Toda aplicación en React Native se construye a partir de piezas pequeñas y reutilizables. Con la sentencia `import`, le indicas a JavaScript cuáles piezas necesitas en tu archivo actual.
 
-- **Imports con nombre** usan llaves: `{ View, Text }` — seleccionas exportaciones especificas del modulo.
-- **Imports por defecto** no tienen llaves: `import React from "react"` — el modulo eligio una exportacion "principal".
+- **Imports con nombre** usan llaves: `{ View, Text }` — seleccionas exportaciones específicas del módulo.
+- **Imports por defecto** no llevan llaves: `import React from "react"` — el módulo definió una exportación "principal".
 
-## Por que esto importa en Expo
+## ¿Por qué importa en Expo?
 
-Expo proporciona docenas de paquetes (`expo-camera`, `expo-location`, etc.). Cada uno se importa por separado para que tu app solo empaquete lo que realmente usa — manteniendo tu app pequena y rapida.
+Expo ofrece docenas de paquetes (`expo-camera`, `expo-location`, etc.). Cada uno se importa por separado para que tu app solo incluya lo que realmente usa, manteniéndola ligera y rápida.
 
 ```tsx
-// Solo el componente Camera se empaqueta
+// Solo se incluye el componente Camera
 import { Camera } from "expo-camera";
 ```
 
-> **Tip:** Si ves un error de "module not found", probablemente necesitas instalar el paquete primero con `npx expo install`.
+> **Tip:** Si ves un error de "module not found", seguramente necesitas instalar el paquete primero con `npx expo install`.

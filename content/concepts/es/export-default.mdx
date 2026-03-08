@@ -1,0 +1,49 @@
+---
+id: export-default
+title: Exportaciones por Defecto
+category: basics
+order: 5
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Exportaciones por Defecto
+
+`export default` le dice a Expo **"este es el componente principal de este archivo — ponlo en pantalla."** Cada pantalla de tu app necesita exactamente una exportación por defecto.
+
+```tsx
+export default function HomeScreen() {
+  return (
+    <View>
+      <Text>Inicio</Text>
+    </View>
+  );
+}
+```
+
+## ¿Cómo funciona?
+
+Cada archivo solo puede tener **una** exportación por defecto. Cuando otro archivo lo importa, puede usar el nombre que quiera:
+
+```tsx
+// Todos importan el mismo componente
+import HomeScreen from "./HomeScreen";
+import MyPage from "./HomeScreen";
+import Whatever from "./HomeScreen";
+```
+
+Compáralo con las **exportaciones con nombre**, donde el nombre debe coincidir exactamente:
+
+```tsx
+// Exportación con nombre — el nombre debe coincidir
+export function helper() {}
+import { helper } from "./utils";
+```
+
+## ¿Por qué importa en Expo?
+
+Expo Router usa el sistema de archivos para la navegación. La **exportación por defecto** de cada archivo en el directorio `app/` se convierte en una pantalla:
+
+- `app/index.tsx` → la exportación por defecto se renderiza en `/`
+- `app/settings.tsx` → la exportación por defecto se renderiza en `/settings`
+
+> **Intenta esto:** Quita el `export default` de un componente de pantalla y observa qué pasa — ¡Expo no sabrá qué renderizar!

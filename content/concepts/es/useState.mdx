@@ -8,30 +8,30 @@ expoDocUrl: https://docs.expo.dev/get-started/start-developing/
 
 # Hook useState
 
-`useState` le da a tu componente una **memoria**. Sin el, cosas como contadores, campos de texto y botones de alternancia se reiniciarian cada vez que la pantalla se actualiza.
+`useState` le da **memoria** a tu componente. Sin él, cosas como contadores, campos de texto y switches se reiniciarían cada vez que se actualiza la pantalla.
 
 ```tsx
 const [count, setCount] = useState(0);
 ```
 
-## El patron
+## El patrón
 
-Cada llamada a `useState` devuelve dos cosas:
+Cada llamada a `useState` te devuelve dos cosas:
 
-1. **El valor actual** (`count`) — leelo para mostrar datos.
-2. **Una funcion setter** (`setCount`) — llamala para actualizar el valor y volver a renderizar.
+1. **El valor actual** (`count`) — úsalo para mostrar datos.
+2. **Una función para actualizarlo** (`setCount`) — llámala para cambiar el valor y volver a renderizar.
 
-El argumento de `useState(0)` es el **valor inicial**, usado solo en el primer renderizado.
+El argumento de `useState(0)` es el **valor inicial**, que solo se usa en el primer renderizado.
 
-## Actualizando el estado
+## Cómo actualizar el estado
 
-Cuando llamas al setter, React programa un nuevo renderizado con el nuevo valor:
+Cuando llamas a la función setter, React programa un nuevo renderizado con el valor actualizado:
 
 ```tsx
 <Button title="Sumar 1" onPress={() => setCount(count + 1)} />
 ```
 
-Las actualizaciones de estado son **asincronas** — el nuevo valor esta disponible en el _siguiente_ renderizado, no inmediatamente despues de llamar al setter.
+Las actualizaciones de estado son **asíncronas**: el nuevo valor estará disponible en el _siguiente_ renderizado, no justo después de llamar al setter.
 
 ## Patrones comunes en Expo
 
@@ -39,11 +39,11 @@ Las actualizaciones de estado son **asincronas** — el nuevo valor esta disponi
 // Alternar visibilidad
 const [visible, setVisible] = useState(false);
 
-// Rastrear entrada de texto
+// Guardar lo que escribe el usuario
 const [name, setName] = useState("");
 
 // Almacenar una lista
 const [items, setItems] = useState<string[]>([]);
 ```
 
-> **Regla general:** Si un valor cambia con el tiempo y afecta lo que el usuario ve, pertenece al estado.
+> **Regla general:** Si un valor cambia con el tiempo y afecta lo que el usuario ve, debe ir en el estado.

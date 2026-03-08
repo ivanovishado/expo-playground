@@ -1,0 +1,60 @@
+---
+id: component-function
+title: Funciones de Componente
+category: basics
+order: 2
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Funciones de Componente
+
+Un componente es una **pieza reutilizable de la interfaz de tu app** — como un bloque de LEGO. Toda tu aplicación se construye ensamblando componentes, y cada uno es simplemente una función de JavaScript.
+
+```tsx
+export default function HomeScreen() {
+  return (
+    <View>
+      <Text>¡Bienvenido!</Text>
+    </View>
+  );
+}
+```
+
+## Anatomía de un componente
+
+1. **Nombre de la función** — Por convención se usa PascalCase (`HomeScreen`, no `homeScreen`).
+2. **Valor de retorno** — JSX que describe qué renderizar.
+3. **Exportación** — `export default` lo convierte en el componente principal del archivo.
+
+## Props: las entradas del componente
+
+Los componentes reciben un solo objeto de `props`. Usa desestructuración para un código más limpio:
+
+```tsx
+function Greeting({ name }: { name: string }) {
+  return <Text>¡Hola, {name}!</Text>;
+}
+
+// Uso
+<Greeting name="Alex" />;
+```
+
+Los props fluyen en **una sola dirección** — del padre al hijo. Esto hace que el flujo de datos sea predecible y fácil de rastrear.
+
+## Composición
+
+Construye interfaces complejas anidando componentes unos dentro de otros:
+
+```tsx
+function App() {
+  return (
+    <View>
+      <Header />
+      <Greeting name="Alex" />
+      <Footer />
+    </View>
+  );
+}
+```
+
+> **Idea clave:** Los componentes son reutilizables. Los escribes una vez y los usas donde quieras — como bloques de LEGO para tu interfaz.

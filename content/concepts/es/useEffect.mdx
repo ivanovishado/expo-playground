@@ -1,0 +1,69 @@
+---
+id: useEffect
+title: Hook useEffect
+category: hooks
+order: 7
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Hook useEffect
+
+`useEffect` le dice a tu componente que **haga algo después de aparecer en pantalla** — como cargar datos de internet, iniciar un temporizador o escuchar actualizaciones.
+
+```tsx
+useEffect(() => {
+  fetchUserProfile();
+}, []);
+```
+
+## El arreglo de dependencias
+
+El segundo argumento controla _cuándo_ se ejecuta el efecto:
+
+```tsx
+// Se ejecuta UNA VEZ después del primer renderizado (montaje)
+useEffect(() => {
+  loadData();
+}, []);
+
+// Se ejecuta cuando cambia `count`
+useEffect(() => {
+  document.title = `Cuenta: ${count}`;
+}, [count]);
+
+// Se ejecuta después de CADA renderizado (generalmente es un error)
+useEffect(() => {
+  // ¡Ten cuidado con esto!
+});
+```
+
+## Funciones de limpieza
+
+Retorna una función para hacer limpieza cuando el componente se desmonta o antes de volver a ejecutar el efecto:
+
+```tsx
+useEffect(() => {
+  const timer = setInterval(() => tick(), 1000);
+
+  // Limpieza: detener el temporizador
+  return () => clearInterval(timer);
+}, []);
+```
+
+Esto previene **fugas de memoria** — una fuente común de bugs en apps móviles.
+
+## Patrones comunes en Expo
+
+```tsx
+// Cargar datos al montar
+useEffect(() => {
+  async function load() {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    setItems(data);
+  }
+  load();
+}, []);
+```
+
+> **Intenta esto:** Agrega un `useEffect` que muestre "¡Componente montado!" cuando la pantalla cargue, y "¡Adiós!" cuando se desmonte.

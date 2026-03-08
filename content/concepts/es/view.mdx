@@ -8,7 +8,7 @@ expoDocUrl: https://docs.expo.dev/versions/latest/react-native/view/
 
 # Componente View
 
-`View` es una **caja invisible** que agrupa y posiciona otros elementos en la pantalla. No muestra nada por si misma — piensa en ella como un estante que sostiene y organiza tu contenido.
+`View` es una **caja invisible** que agrupa y posiciona otros elementos en la pantalla. Por sí solo no muestra nada — piénsalo como un estante que sostiene y organiza tu contenido.
 
 ```tsx
 <View style={styles.container}>
@@ -18,27 +18,27 @@ expoDocUrl: https://docs.expo.dev/versions/latest/react-native/view/
 
 ## View vs. div
 
-Si conoces HTML, piensa en `View` como el equivalente en React Native de `<div>`. Pero hay diferencias clave:
+Si conoces HTML, piensa en `View` como el equivalente de `<div>` en React Native. Pero hay diferencias importantes:
 
-| HTML `<div>`                 | React Native `<View>`                |
-| ---------------------------- | ------------------------------------ |
-| Usa CSS para el diseno       | Usa Flexbox por defecto              |
-| Diseno de bloque por defecto | Flex columna por defecto             |
-| Renderiza texto directamente | No puede contener texto sin envolver |
+| HTML `<div>`                 | React Native `<View>`        |
+| ---------------------------- | ---------------------------- |
+| Usa CSS para el diseño       | Usa Flexbox por defecto      |
+| Diseño de bloque por defecto | Flex en columna por defecto  |
+| Renderiza texto directamente | No admite texto sin `<Text>` |
 
-**Importante:** No puedes colocar texto sin envolver dentro de un `View` — siempre envuelve el texto en un componente `<Text>`.
+**Importante:** No puedes poner texto directamente dentro de un `View` — siempre envuélvelo en un componente `<Text>`.
 
 ```tsx
-// Esto fallara
+// Esto va a tronar
 <View>Hola</View>
 
-// Esto funciona
+// Esto sí funciona
 <View><Text>Hola</Text></View>
 ```
 
-## Anidando views
+## Anidar Views
 
-Construye disenos complejos anidando Views:
+Construye diseños complejos anidando Views unos dentro de otros:
 
 ```tsx
 <View style={{ flex: 1 }}>
@@ -52,4 +52,4 @@ Construye disenos complejos anidando Views:
 </View>
 ```
 
-> **Intenta esto:** Crea un diseno con una fila de encabezado en la parte superior y contenido centrado debajo usando Views anidados.
+> **Intenta esto:** Crea un diseño con una fila de encabezado en la parte superior y contenido centrado abajo, usando Views anidados.

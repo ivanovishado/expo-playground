@@ -1,0 +1,52 @@
+---
+id: scrollview
+title: Componente ScrollView
+category: basics
+order: 12
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/scrollview/
+---
+
+# Componente ScrollView
+
+Cuando tu contenido es más alto que la pantalla, el usuario necesita **hacer scroll para ver el resto**. `ScrollView` lo hace posible — sin él, todo lo que quede debajo del borde de la pantalla es invisible e inaccesible.
+
+```tsx
+<ScrollView style={{ flex: 1 }}>
+  <Text>Elemento 1</Text>
+  <Text>Elemento 2</Text>
+  <Text>Elemento 3</Text>
+  {/* ...más elementos */}
+</ScrollView>
+```
+
+## ¿Cuándo usar ScrollView?
+
+Usa `ScrollView` para una **cantidad pequeña y conocida** de contenido — como una página de ajustes o un formulario. Para listas largas (decenas o cientos de elementos), mejor usa `FlatList`.
+
+| Caso de uso                  | Componente   |
+| ---------------------------- | ------------ |
+| Página de ajustes            | `ScrollView` |
+| Formulario con muchos campos | `ScrollView` |
+| Lista de 100+ elementos      | `FlatList`   |
+| Mensajes de chat             | `FlatList`   |
+
+## Desplazamiento horizontal
+
+```tsx
+<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+  <Image source={img1} style={{ width: 200, height: 150 }} />
+  <Image source={img2} style={{ width: 200, height: 150 }} />
+  <Image source={img3} style={{ width: 200, height: 150 }} />
+</ScrollView>
+```
+
+## Props principales
+
+| Prop                           | Para qué sirve                                             |
+| ------------------------------ | ---------------------------------------------------------- |
+| `horizontal`                   | Habilita el desplazamiento lateral                         |
+| `showsVerticalScrollIndicator` | Muestra u oculta la barra de desplazamiento                |
+| `contentContainerStyle`        | Aplica estilos al contenedor interno                       |
+| `keyboardShouldPersistTaps`    | Controla el comportamiento al tocar con el teclado abierto |
+
+> **Intenta esto:** Envuelve una lista larga de elementos Text en un ScrollView y agrega `contentContainerStyle={{ padding: 16 }}` para espaciado interno.

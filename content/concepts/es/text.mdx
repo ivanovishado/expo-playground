@@ -1,0 +1,51 @@
+---
+id: text
+title: Componente Text
+category: basics
+order: 9
+expoDocUrl: https://docs.expo.dev/versions/latest/react-native/text/
+---
+
+# Componente Text
+
+¿Quieres mostrar texto en pantalla? **Tienes** que envolverlo en un componente `Text`. React Native no muestra ningún texto a menos que esté dentro de una etiqueta `<Text>`.
+
+```tsx
+<Text style={{ fontSize: 18, fontWeight: "bold" }}>¡Bienvenido a Expo!</Text>
+```
+
+## Anidar Text
+
+Los componentes `Text` se pueden anidar para aplicar estilos diferentes a partes de una oración:
+
+```tsx
+<Text style={{ fontSize: 16 }}>
+  Esto está en <Text style={{ fontWeight: "bold" }}>negritas</Text> y{" "}
+  <Text style={{ color: "blue" }}>azul</Text>.
+</Text>
+```
+
+El `Text` anidado hereda el estilo del padre, así que solo cambias lo que necesitas.
+
+## Props útiles
+
+| Prop            | Para qué sirve                                |
+| --------------- | --------------------------------------------- |
+| `numberOfLines` | Trunca el texto con "..." después de N líneas |
+| `selectable`    | Permite al usuario copiar el texto            |
+| `onPress`       | Hace que el texto responda al toque           |
+
+```tsx
+<Text numberOfLines={2} style={{ lineHeight: 22 }}>
+  Este es un párrafo largo que se va a truncar después de dos líneas con puntos
+  suspensivos al final...
+</Text>
+```
+
+## Text vs. tipografía web
+
+- No hay `font-family` de CSS — usa la carga de fuentes de Expo.
+- No hay `<h1>`–`<h6>` — estiliza los encabezados manualmente con `fontSize` y `fontWeight`.
+- Todo el texto **debe** estar dentro de un componente `<Text>`.
+
+> **Intenta esto:** Crea un párrafo con una palabra en negritas y otra de un color diferente, usando componentes Text anidados.

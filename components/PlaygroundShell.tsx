@@ -301,7 +301,7 @@ export default function PlaygroundShell({
               </button>
             </PanelHeader>
             <div className="flex-1 overflow-hidden">
-              <SnackPreview code={code} />
+              <SnackPreview code={code} locale={locale} />
             </div>
           </aside>
         </Panel>

@@ -47,12 +47,12 @@ export default function ConceptList({
   onConceptClick,
   cards,
 }: ConceptListProps) {
-  // Deduplicate by conceptId — multiple AST nodes can map to the same concept
+  // Deduplicate by conceptId and only show concepts that have a matching card
   const seen = new Set<string>();
   const uniqueConcepts = concepts.filter((concept) => {
     if (seen.has(concept.conceptId)) return false;
     seen.add(concept.conceptId);
-    return true;
+    return cards.has(concept.conceptId);
   });
 
   if (uniqueConcepts.length === 0) {
@@ -67,26 +67,21 @@ export default function ConceptList({
 
   return (
     <div className="flex flex-wrap gap-1.5 border-b border-gray-100 px-4 py-3">
-      {uniqueConcepts.map((concept, index) => {
+      {uniqueConcepts.map((concept) => {
         const isActive = concept.conceptId === activeConceptId;
-        const hasCard = cards.has(concept.conceptId);
         const styles = CATEGORY_STYLES[concept.category] ?? DEFAULT_STYLE;
 
         return (
           <button
-            key={concept.conceptId ?? `concept-${index}`}
+            key={concept.conceptId}
             type="button"
             onClick={() => onConceptClick(concept.conceptId)}
-            disabled={!hasCard}
             className={[
-              "rounded-full border px-2.5 py-1 text-xs font-medium transition-all duration-200",
+              "cursor-pointer rounded-full border px-2.5 py-1 text-xs font-medium transition-all duration-200 hover:shadow-sm active:scale-[0.97]",
               styles.border,
               styles.text,
               isActive ? styles.bgActive : styles.bg,
               isActive ? "ring-1 ring-current shadow-sm" : "",
-              hasCard
-                ? "cursor-pointer hover:shadow-sm active:scale-[0.97]"
-                : "cursor-default opacity-40",
             ]
               .filter(Boolean)
               .join(" ")}

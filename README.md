@@ -2,6 +2,8 @@
 
 An educational tool that helps beginners understand LLM-generated Expo and React Native code. Paste code into the editor, and the playground automatically detects programming concepts, highlights them in the source, and walks you through each one with guided explanations and a live preview.
 
+![Annotated Expo Playground screenshot](.github/app-screenshot.png)
+
 ## How It Works
 
 The playground has three columns:

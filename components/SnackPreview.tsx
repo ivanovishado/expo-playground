@@ -2,9 +2,40 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { SnackError } from "snack-sdk";
+import type { Locale } from "@/lib/types";
+
+const FALLBACK_TEXT: Record<
+  Locale,
+  {
+    heading: string;
+    description: string;
+    openInSnack: string;
+    or: string;
+    localInstructions: string;
+  }
+> = {
+  en: {
+    heading: "Preview available on Snack",
+    description:
+      "Live preview requires a local development server. You can open your code directly in Expo Snack instead.",
+    openInSnack: "Open in Snack",
+    or: "or",
+    localInstructions: "For live preview, clone the repo and run locally:",
+  },
+  es: {
+    heading: "Vista previa disponible en Snack",
+    description:
+      "La vista previa en vivo requiere un servidor de desarrollo local. Puedes abrir tu código directamente en Expo Snack.",
+    openInSnack: "Abrir en Snack",
+    or: "o",
+    localInstructions:
+      "Para vista previa en vivo, clona el repo y ejecútalo localmente:",
+  },
+};
 
 interface SnackPreviewProps {
   code: string;
+  locale?: Locale;
 }
 
 /**
@@ -20,7 +51,15 @@ function buildSnackUrl(code: string): string {
   return `https://snack.expo.dev/?${params.toString()}`;
 }
 
-function DeployedPreviewFallback({ code }: { code: string }) {
+function DeployedPreviewFallback({
+  code,
+  locale = "en",
+}: {
+  code: string;
+  locale?: Locale;
+}) {
+  const t = FALLBACK_TEXT[locale];
+
   return (
     <div className="flex h-full flex-col items-center justify-center bg-gray-50 px-6 py-8">
       <div className="w-full max-w-xs text-center">
@@ -40,12 +79,11 @@ function DeployedPreviewFallback({ code }: { code: string }) {
         </svg>
 
         <h3 className="mb-2 text-sm font-semibold text-gray-800">
-          Preview available on Snack
+          {t.heading}
         </h3>
 
         <p className="mb-5 text-xs leading-relaxed text-gray-500">
-          Live preview requires a local development server. You can open your
-          code directly in Expo Snack instead.
+          {t.description}
         </p>
 
         <a
@@ -68,21 +106,19 @@ function DeployedPreviewFallback({ code }: { code: string }) {
               d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
             />
           </svg>
-          Open in Snack
+          {t.openInSnack}
         </a>
 
         {/* Separator */}
         <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-200" />
           <span className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
-            or
+            {t.or}
           </span>
           <div className="h-px flex-1 bg-gray-200" />
         </div>
 
-        <p className="mb-3 text-xs text-gray-500">
-          For live preview, clone the repo and run locally:
-        </p>
+        <p className="mb-3 text-xs text-gray-500">{t.localInstructions}</p>
 
         <a
           href="https://github.com/ivanovishado/expo-playground"
@@ -110,7 +146,10 @@ function DeployedPreviewFallback({ code }: { code: string }) {
  * link to open the code in Expo Snack, since the Snack runtime
  * only allows localhost origins for postMessage communication.
  */
-export default function SnackPreview({ code }: SnackPreviewProps) {
+export default function SnackPreview({
+  code,
+  locale = "en",
+}: SnackPreviewProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const snackRef = useRef<InstanceType<
     typeof import("snack-sdk").Snack
@@ -220,7 +259,7 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
   }
 
   if (!isLocalhost) {
-    return <DeployedPreviewFallback code={code} />;
+    return <DeployedPreviewFallback code={code} locale={locale} />;
   }
 
   return (

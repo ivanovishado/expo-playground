@@ -3,9 +3,13 @@
 import { useMemo, useEffect, useRef, useCallback } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
-import { EditorView } from "@codemirror/view";
 import { StateField, StateEffect } from "@codemirror/state";
-import { Decoration, type DecorationSet } from "@codemirror/view";
+import {
+  EditorView,
+  Decoration,
+  type DecorationSet,
+  placeholder,
+} from "@codemirror/view";
 import type { DetectedConcept } from "@/lib/types";
 import { buildDecorations } from "@/lib/codemirror-decorations";
 
@@ -81,6 +85,7 @@ export default function CodeEditor({
       javascript({ jsx: true, typescript: true }),
       clickHandler,
       decorationField,
+      placeholder("Paste some Expo code or pick an example above."),
     ];
   }, [onConceptClick]);
 
@@ -97,16 +102,6 @@ export default function CodeEditor({
     const decos = buildDecorations(concepts, activeConceptId, view.state.doc);
     view.dispatch({ effects: setDecorationsEffect.of(decos) });
   }, [concepts, activeConceptId]);
-
-  if (!code) {
-    return (
-      <div className="flex h-full items-center justify-center bg-gray-50/50">
-        <p className="text-xs text-gray-400">
-          Paste some Expo code or pick an example above.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <CodeMirror

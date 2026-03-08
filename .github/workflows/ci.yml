@@ -18,6 +18,13 @@ jobs:
 
       - run: npm ci
 
+      - name: Cache Next.js build
+        uses: actions/cache@v5
+        with:
+          path: .next/cache
+          key: nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**') }}
+          restore-keys: nextjs-${{ hashFiles('package-lock.json') }}-
+
       - name: Type check
         run: npm run check-types
 
@@ -26,3 +33,10 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Upload build output
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-output
+          path: out

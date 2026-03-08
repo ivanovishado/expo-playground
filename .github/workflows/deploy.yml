@@ -21,19 +21,42 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     steps:
+      # workflow_run: reuse build output from CI
+      - name: Download build output from CI
+        if: github.event_name != 'workflow_dispatch'
+        uses: actions/download-artifact@v8
+        with:
+          name: build-output
+          path: out
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # workflow_dispatch: build from scratch
       - uses: actions/checkout@v6
+        if: github.event_name == 'workflow_dispatch'
 
       - uses: actions/setup-node@v6
+        if: github.event_name == 'workflow_dispatch'
         with:
           node-version: 24
           cache: npm
 
       - run: npm ci
+        if: github.event_name == 'workflow_dispatch'
+
+      - name: Cache Next.js build
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/cache@v5
+        with:
+          path: .next/cache
+          key: nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**') }}
+          restore-keys: nextjs-${{ hashFiles('package-lock.json') }}-
 
       - name: Build
+        if: github.event_name == 'workflow_dispatch'
         run: npm run build
 
-      - name: Upload artifact
+      - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: out

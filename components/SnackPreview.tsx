@@ -40,6 +40,12 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
     if (!mounted) return;
     addDebug(`page origin: ${window.location.origin}`);
     function onMessage(e: MessageEvent) {
+      // Filter out React DevTools extension noise
+      if (
+        typeof e.data === "object" &&
+        e.data?.source?.startsWith("react-devtools")
+      )
+        return;
       const data =
         typeof e.data === "string"
           ? e.data.slice(0, 120)
@@ -197,7 +203,6 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
           className="flex-1 border-0 bg-white"
           title="Expo Snack Preview"
           allow="accelerometer; gyroscope; screen-wake-lock"
-          sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
         />
       ) : (
         <div className="flex flex-1 items-center justify-center bg-gray-50/50">

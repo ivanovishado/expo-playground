@@ -35,6 +35,21 @@ export default function SnackPreview({ code }: SnackPreviewProps) {
     setMounted(true);
   }, []);
 
+  // Debug: log ALL postMessage events from any iframe
+  useEffect(() => {
+    if (!mounted) return;
+    addDebug(`page origin: ${window.location.origin}`);
+    function onMessage(e: MessageEvent) {
+      const data =
+        typeof e.data === "string"
+          ? e.data.slice(0, 120)
+          : JSON.stringify(e.data).slice(0, 120);
+      addDebug(`msg from=${e.origin} data=${data}`);
+    }
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [mounted, addDebug]);
+
   // Initialize Snack session
   useEffect(() => {
     if (!mounted) return;

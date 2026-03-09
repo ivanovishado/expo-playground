@@ -18,6 +18,7 @@ import ConceptList from "./ConceptList";
 import SnackPreview from "./SnackPreview";
 import ExamplePicker from "./ExamplePicker";
 import LanguageToggle from "./LanguageToggle";
+import ThemeToggle from "./ThemeToggle";
 
 const LAYOUT_STORAGE_KEY = "playground-layout";
 const PREVIEW_COLLAPSED_SIZE = 36;
@@ -30,8 +31,8 @@ function PanelHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-2 border-b border-gray-100 px-4 py-2.5">
-      <span className="text-xs font-semibold tracking-wide text-gray-400 uppercase">
+    <div className="flex items-center gap-2 border-b border-border-subtle px-4 py-2.5">
+      <span className="text-xs font-semibold tracking-wide text-text-muted uppercase">
         {title}
       </span>
       {children}
@@ -187,12 +188,12 @@ export default function PlaygroundShell({
   return (
     <>
       {/* Responsive fallback for narrow screens */}
-      <div className="min-width-warning h-screen flex-col items-center justify-center bg-gray-50 px-6 text-center">
+      <div className="min-width-warning h-screen flex-col items-center justify-center bg-surface-raised px-6 text-center">
         <div className="mb-3 text-4xl">📱</div>
-        <h2 className="mb-2 text-lg font-semibold text-gray-700">
+        <h2 className="mb-2 text-lg font-semibold text-text-secondary">
           Wider Screen Needed
         </h2>
-        <p className="max-w-xs text-sm leading-relaxed text-gray-500">
+        <p className="max-w-xs text-sm leading-relaxed text-text-tertiary">
           The Annotated Expo Playground needs at least 900px of width for its
           three-column layout. Please use a larger screen or resize your browser
           window.
@@ -214,15 +215,16 @@ export default function PlaygroundShell({
           defaultSize="25%"
           minSize={200}
         >
-          <aside className="absolute inset-0 flex flex-col overflow-hidden bg-white">
+          <aside className="absolute inset-0 flex flex-col overflow-hidden bg-surface">
             <PanelHeader title="Concepts">
               {navigableConcepts.length > 0 && (
-                <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-500">
+                <span className="rounded-full bg-surface-sunken px-1.5 py-0.5 text-[10px] font-medium text-text-tertiary">
                   {navigableConcepts.length}
                 </span>
               )}
-              <div className="ml-auto">
+              <div className="ml-auto flex items-center gap-1.5">
                 <LanguageToggle locale={locale} onChange={setLocale} />
+                <ThemeToggle />
               </div>
             </PanelHeader>
             <ConceptList
@@ -252,7 +254,7 @@ export default function PlaygroundShell({
         <Panel id="editor" className="relative" defaultSize="45%" minSize={300}>
           <main className="absolute inset-0 flex flex-col overflow-hidden">
             <PanelHeader title="Editor">
-              <div className="h-3.5 w-px bg-gray-200" />
+              <div className="h-3.5 w-px bg-border" />
               <ExamplePicker examples={examples} onSelect={setCode} />
             </PanelHeader>
             <div className="flex-1 overflow-hidden">
@@ -281,10 +283,10 @@ export default function PlaygroundShell({
           onResize={handlePreviewResize}
         >
           {isPreviewCollapsed && (
-            <div className="absolute inset-0 flex items-center justify-center border-l border-gray-200 bg-white">
+            <div className="absolute inset-0 flex items-center justify-center border-l border-border bg-surface">
               <button
                 onClick={togglePreview}
-                className="rounded p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+                className="rounded p-1 text-text-muted transition-colors hover:bg-surface-raised hover:text-text-secondary"
                 title="Expand preview"
               >
                 <ChevronIcon direction="left" />
@@ -292,12 +294,12 @@ export default function PlaygroundShell({
             </div>
           )}
           <aside
-            className={`absolute inset-0 flex flex-col overflow-hidden bg-white ${isPreviewCollapsed ? "hidden" : ""}`}
+            className={`absolute inset-0 flex flex-col overflow-hidden bg-surface ${isPreviewCollapsed ? "hidden" : ""}`}
           >
             <PanelHeader title="Preview">
               <button
                 onClick={togglePreview}
-                className="ml-auto rounded p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+                className="ml-auto rounded p-1 text-text-muted transition-colors hover:bg-surface-raised hover:text-text-secondary"
                 title="Collapse preview"
               >
                 <ChevronIcon direction="right" />

@@ -138,10 +138,13 @@ export default async function ConceptPage({
       <JsonLdScript data={jsonLd} />
       <main className="mx-auto max-w-2xl px-4 py-8">
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
+        <nav
+          aria-label="Breadcrumb"
+          className="mb-6 text-sm text-text-tertiary"
+        >
           <ol className="flex items-center gap-1.5">
             <li>
-              <Link href="/" className="hover:text-gray-700">
+              <Link href="/" className="hover:text-text-secondary">
                 Home
               </Link>
             </li>
@@ -149,7 +152,7 @@ export default async function ConceptPage({
             <li>
               <Link
                 href={`/${locale}/concepts`}
-                className="hover:text-gray-700"
+                className="hover:text-text-secondary"
               >
                 {text.concepts}
               </Link>
@@ -167,7 +170,7 @@ export default async function ConceptPage({
               </span>
             </li>
             <li aria-hidden="true">/</li>
-            <li className="font-medium text-gray-900">{card.title}</li>
+            <li className="font-medium text-text-primary">{card.title}</li>
           </ol>
         </nav>
 
@@ -176,11 +179,13 @@ export default async function ConceptPage({
           <div className="concept-prose">{card.content}</div>
 
           {/* CTA to playground */}
-          <div className="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
-            <p className="mb-3 text-sm text-gray-600">{text.seeInAction}</p>
+          <div className="mt-8 rounded-lg border border-border bg-surface-raised p-6 text-center">
+            <p className="mb-3 text-sm text-text-secondary">
+              {text.seeInAction}
+            </p>
             <Link
               href={`/?concept=${slug}`}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+              className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
             >
               {text.tryInPlayground}
             </Link>
@@ -192,7 +197,7 @@ export default async function ConceptPage({
               href={card.expoDocUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-blue-500 hover:text-blue-600 hover:underline"
+              className="text-sm text-accent hover:text-accent-hover hover:underline"
             >
               {text.expoDocsLink} ↗
             </a>

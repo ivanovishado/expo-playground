@@ -38,8 +38,8 @@ export default function ExamplePicker({
             onClick={() => handleSelect(example)}
             className={`rounded-md border px-2.5 py-1 text-[11px] font-medium transition-all duration-150 ${
               isActive
-                ? "border-blue-400 bg-blue-50 text-blue-700 shadow-sm"
-                : "border-gray-200 bg-gray-50/50 text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                ? "border-accent-border bg-accent-subtle text-accent-text shadow-sm"
+                : "border-border bg-surface-raised/50 text-text-tertiary hover:bg-surface-raised hover:text-text-secondary"
             }`}
             title={example.description}
           >

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SITE_URL, SITE_NAME } from "@/lib/seo";
 import { SUPPORTED_LOCALES } from "@/lib/types";
+import ThemeProvider from "@/components/ThemeProvider";
+import ThemeToggle from "@/components/ThemeToggle";
+import Link from "next/link";
 import "@/app/globals.css";
 
 const geistSans = Geist({
@@ -40,11 +43,24 @@ export default async function ContentLayout({
   const { locale } = await params;
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>
+          <header className="sticky top-0 z-10 border-b border-border bg-surface/80 backdrop-blur-sm">
+            <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-2.5">
+              <Link
+                href="/"
+                className="text-sm font-semibold text-text-primary transition-colors hover:text-accent"
+              >
+                Expo Playground
+              </Link>
+              <ThemeToggle />
+            </div>
+          </header>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

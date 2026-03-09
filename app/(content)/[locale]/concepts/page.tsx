@@ -112,24 +112,26 @@ export default async function ConceptsIndexPage({
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
+      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-text-tertiary">
         <ol className="flex items-center gap-1.5">
           <li>
-            <Link href="/" className="hover:text-gray-700">
+            <Link href="/" className="hover:text-text-secondary">
               Home
             </Link>
           </li>
           <li aria-hidden="true">/</li>
-          <li className="font-medium text-gray-900">
+          <li className="font-medium text-text-primary">
             {locale === "es" ? "Conceptos" : "Concepts"}
           </li>
         </ol>
       </nav>
 
-      <h1 className="mb-2 text-2xl font-bold text-gray-900">{text.heading}</h1>
-      <p className="mb-8 text-gray-600">
+      <h1 className="mb-2 text-2xl font-bold text-text-primary">
+        {text.heading}
+      </h1>
+      <p className="mb-8 text-text-secondary">
         {text.intro.replace("{count}", String(cards.length))}{" "}
-        <Link href="/" className="text-blue-600 hover:underline">
+        <Link href="/" className="text-accent hover:underline">
           {cta.tryPlayground}
         </Link>
         .
@@ -138,7 +140,7 @@ export default async function ConceptsIndexPage({
       <div className="space-y-8">
         {grouped.map(({ category, config, label, cards: catCards }) => (
           <section key={category}>
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-gray-900">
+            <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-text-primary">
               <span
                 className="inline-block h-3 w-3 rounded-full"
                 style={{ backgroundColor: `var(${config.cssVar})` }}
@@ -150,12 +152,14 @@ export default async function ConceptsIndexPage({
                 <Link
                   key={card.id}
                   href={`/${locale}/concepts/${card.id}`}
-                  className="group rounded-lg border border-gray-200 p-4 transition-colors hover:border-gray-300 hover:bg-gray-50"
+                  className="group rounded-lg border border-border p-4 transition-colors hover:bg-surface-raised"
                 >
-                  <h3 className="font-medium text-gray-900 group-hover:text-blue-600">
+                  <h3 className="font-medium text-text-primary group-hover:text-accent">
                     {card.title}
                   </h3>
-                  <span className="mt-1 text-sm text-gray-500">{label}</span>
+                  <span className="mt-1 text-sm text-text-tertiary">
+                    {label}
+                  </span>
                 </Link>
               ))}
             </div>

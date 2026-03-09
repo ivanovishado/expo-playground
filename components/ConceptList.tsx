@@ -66,7 +66,7 @@ export default function ConceptList({
   if (uniqueConcepts.length === 0) {
     return (
       <div className="px-4 py-3">
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-text-muted">
           Paste or edit code to detect concepts.
         </p>
       </div>
@@ -74,7 +74,7 @@ export default function ConceptList({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5 border-b border-gray-100 px-4 py-3">
+    <div className="flex flex-wrap items-center gap-1.5 border-b border-border-subtle px-4 py-3">
       {uniqueConcepts.map((concept) => {
         const isActive = concept.conceptId === activeConceptId;
         const styles = CATEGORY_STYLES[concept.category] ?? DEFAULT_STYLE;
@@ -100,7 +100,7 @@ export default function ConceptList({
       })}
       <Link
         href={`/${locale}/concepts`}
-        className="rounded-full px-2 py-1 text-[10px] font-medium text-gray-400 transition-colors hover:text-blue-600"
+        className="rounded-full px-2 py-1 text-[10px] font-medium text-text-muted transition-colors hover:text-accent"
       >
         {BROWSE_ALL_TEXT[locale] ?? BROWSE_ALL_TEXT.en}
       </Link>

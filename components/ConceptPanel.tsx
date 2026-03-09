@@ -70,25 +70,25 @@ export default function ConceptPanel({
   if (!card) {
     return (
       <div className="flex h-full flex-col items-center justify-center p-8 text-center">
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-xl">
+        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent-subtle text-xl">
           📘
         </div>
-        <h2 className="mb-1.5 text-base font-semibold text-gray-800">
+        <h2 className="mb-1.5 text-base font-semibold text-text-heading">
           {t.emptyHeading}
         </h2>
-        <p className="max-w-[220px] text-[13px] leading-relaxed text-gray-500">
+        <p className="max-w-[220px] text-[13px] leading-relaxed text-text-tertiary">
           {t.emptyBefore}{" "}
-          <span className="rounded bg-blue-50 px-1 py-0.5 text-xs font-medium text-blue-600">
+          <span className="rounded bg-accent-subtle px-1 py-0.5 text-xs font-medium text-accent">
             {t.emptyChipLabel}
           </span>{" "}
           {t.emptyAfter}
         </p>
         <Link
           href={`/${locale}/concepts`}
-          className="mt-5 rounded-lg border border-gray-200 px-4 py-2.5 text-xs font-medium text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-50"
+          className="mt-5 rounded-lg border border-border px-4 py-2.5 text-xs font-medium text-text-secondary transition-colors hover:bg-surface-raised"
         >
           <span className="block font-semibold">{t.browseTutorials}</span>
-          <span className="mt-0.5 block text-gray-400">
+          <span className="mt-0.5 block text-text-muted">
             {t.browseTutorialsDesc.replace("{count}", String(conceptCount))}
           </span>
         </Link>
@@ -110,7 +110,9 @@ export default function ConceptPanel({
           className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
           style={{ backgroundColor: accentColor }}
         />
-        <h2 className="text-sm font-semibold text-gray-900">{card.title}</h2>
+        <h2 className="text-sm font-semibold text-text-primary">
+          {card.title}
+        </h2>
         <span
           className="ml-auto rounded-md px-1.5 py-0.5 text-[10px] font-medium capitalize"
           style={{
@@ -123,28 +125,28 @@ export default function ConceptPanel({
       </div>
 
       {/* MDX Content */}
-      <div className="concept-prose flex-1 overflow-y-auto px-4 py-4 text-[13px] leading-relaxed text-gray-700">
+      <div className="concept-prose flex-1 overflow-y-auto px-4 py-4 leading-relaxed text-text-secondary">
         {card.content}
       </div>
 
       {/* Full tutorial link */}
-      <div className="border-t border-gray-100 px-4 py-2">
+      <div className="border-t border-border-subtle px-4 py-2">
         <Link
           href={`/${locale}/concepts/${card.id}`}
-          className="block rounded-md bg-gray-50 px-3 py-2 text-center text-xs font-medium text-blue-600 transition-colors hover:bg-gray-100"
+          className="block rounded-md bg-surface-raised px-3 py-2 text-center text-xs font-medium text-accent transition-colors hover:bg-surface-sunken"
         >
           {t.readFullTutorial}
         </Link>
       </div>
 
       {/* Footer: navigation + docs link */}
-      <div className="flex items-center justify-between border-t border-gray-100 px-4 py-2">
+      <div className="flex items-center justify-between border-t border-border-subtle px-4 py-2">
         <div className="flex gap-0.5">
           <button
             type="button"
             onClick={onPrev}
             disabled={!hasPrev}
-            className="rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-600 transition-colors duration-150 hover:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-300"
+            className="rounded-md px-2.5 py-1.5 text-xs font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-raised disabled:cursor-not-allowed disabled:text-text-muted"
           >
             {t.prev}
           </button>
@@ -152,7 +154,7 @@ export default function ConceptPanel({
             type="button"
             onClick={onNext}
             disabled={!hasNext}
-            className="rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-600 transition-colors duration-150 hover:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-300"
+            className="rounded-md px-2.5 py-1.5 text-xs font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-raised disabled:cursor-not-allowed disabled:text-text-muted"
           >
             {t.next}
           </button>

@@ -10,8 +10,10 @@ import {
   type DecorationSet,
   placeholder,
 } from "@codemirror/view";
+import { useTheme } from "next-themes";
 import type { DetectedConcept } from "@/lib/types";
 import { buildDecorations } from "@/lib/codemirror-decorations";
+import { useMounted } from "@/lib/hooks/use-mounted";
 
 /**
  * StateEffect used to push new decoration sets into the editor
@@ -52,6 +54,8 @@ export default function CodeEditor({
   onConceptClick,
 }: CodeEditorProps) {
   const viewRef = useRef<EditorView | null>(null);
+  const { resolvedTheme } = useTheme();
+  const mounted = useMounted();
 
   const handleCreateEditor = useCallback((view: EditorView) => {
     viewRef.current = view;
@@ -109,6 +113,7 @@ export default function CodeEditor({
       onChange={onChange}
       extensions={extensions}
       onCreateEditor={handleCreateEditor}
+      theme={mounted && resolvedTheme === "dark" ? "dark" : "light"}
       height="100%"
       basicSetup={{
         lineNumbers: true,

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { SnackError } from "snack-sdk";
 import type { Locale } from "@/lib/types";
+import { useMounted } from "@/lib/hooks/use-mounted";
 
 const FALLBACK_TEXT: Record<
   Locale,
@@ -61,11 +62,11 @@ function DeployedPreviewFallback({
   const t = FALLBACK_TEXT[locale];
 
   return (
-    <div className="flex h-full flex-col items-center justify-center bg-gray-50 px-6 py-8">
+    <div className="flex h-full flex-col items-center justify-center bg-surface-raised px-6 py-8">
       <div className="w-full max-w-xs text-center">
         {/* Snack icon */}
         <svg
-          className="mx-auto mb-4 h-10 w-10 text-blue-500"
+          className="mx-auto mb-4 h-10 w-10 text-accent"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -78,11 +79,11 @@ function DeployedPreviewFallback({
           />
         </svg>
 
-        <h3 className="mb-2 text-sm font-semibold text-gray-800">
+        <h3 className="mb-2 text-sm font-semibold text-text-heading">
           {t.heading}
         </h3>
 
-        <p className="mb-5 text-xs leading-relaxed text-gray-500">
+        <p className="mb-5 text-xs leading-relaxed text-text-tertiary">
           {t.description}
         </p>
 
@@ -90,7 +91,7 @@ function DeployedPreviewFallback({
           href={buildSnackUrl(code)}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-lg bg-blue-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-600"
+          className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent-hover"
         >
           {/* External link icon */}
           <svg
@@ -111,20 +112,20 @@ function DeployedPreviewFallback({
 
         {/* Separator */}
         <div className="my-6 flex items-center gap-3">
-          <div className="h-px flex-1 bg-gray-200" />
-          <span className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-[10px] font-medium uppercase tracking-wider text-text-muted">
             {t.or}
           </span>
-          <div className="h-px flex-1 bg-gray-200" />
+          <div className="h-px flex-1 bg-border" />
         </div>
 
-        <p className="mb-3 text-xs text-gray-500">{t.localInstructions}</p>
+        <p className="mb-3 text-xs text-text-tertiary">{t.localInstructions}</p>
 
         <a
           href="https://github.com/ivanovishado/expo-playground"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-500 transition-colors hover:text-blue-600"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-accent transition-colors hover:text-accent-hover"
         >
           {/* GitHub icon */}
           <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="currentColor">
@@ -157,14 +158,9 @@ export default function SnackPreview({
   const webPreviewRef = useRef<Window | null>(null);
   const [previewURL, setPreviewURL] = useState<string | null>(null);
   const [error, setError] = useState<SnackError | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
 
   const isLocalhost = mounted && window.location.hostname === "localhost";
-
-  // SSR guard
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Initialize Snack session (localhost only)
   useEffect(() => {
@@ -252,8 +248,8 @@ export default function SnackPreview({
 
   if (!mounted) {
     return (
-      <div className="flex h-full items-center justify-center bg-gray-50">
-        <p className="text-xs text-gray-400">Loading preview…</p>
+      <div className="flex h-full items-center justify-center bg-surface-raised">
+        <p className="text-xs text-text-muted">Loading preview…</p>
       </div>
     );
   }
@@ -265,15 +261,13 @@ export default function SnackPreview({
   return (
     <div className="flex h-full flex-col">
       {error && (
-        <div className="border-b border-red-200 bg-red-50 px-3 py-2.5 transition-all duration-200">
+        <div className="border-b border-error-border bg-error-subtle px-3 py-2.5 transition-all duration-200">
           <div className="flex items-start gap-2">
-            <span className="mt-0.5 shrink-0 text-xs text-red-400">●</span>
+            <span className="mt-0.5 shrink-0 text-xs text-error">●</span>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-red-700">
-                {error.message}
-              </p>
+              <p className="text-xs font-medium text-error">{error.message}</p>
               {error.lineNumber != null && (
-                <p className="mt-0.5 text-[11px] text-red-500">
+                <p className="mt-0.5 text-[11px] text-error">
                   Line {error.lineNumber}
                   {error.columnNumber != null
                     ? `, Col ${error.columnNumber}`
@@ -289,16 +283,16 @@ export default function SnackPreview({
           ref={iframeRef}
           src={previewURL}
           onLoad={handleIframeLoad}
-          className="flex-1 border-0 bg-white"
+          className="flex-1 border-0 bg-surface"
           title="Expo Snack Preview"
           allow="accelerometer; gyroscope; screen-wake-lock"
           sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
         />
       ) : (
-        <div className="flex flex-1 items-center justify-center bg-gray-50/50">
+        <div className="flex flex-1 items-center justify-center bg-surface-raised/50">
           <div className="text-center">
-            <div className="mx-auto mb-3 h-5 w-5 animate-spin rounded-full border-2 border-gray-200 border-t-blue-500" />
-            <p className="text-xs text-gray-400">Connecting to Expo…</p>
+            <div className="mx-auto mb-3 h-5 w-5 animate-spin rounded-full border-2 border-border border-t-accent" />
+            <p className="text-xs text-text-muted">Connecting to Expo…</p>
           </div>
         </div>
       )}

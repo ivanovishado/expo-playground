@@ -24,6 +24,14 @@ Flexbox is how you **arrange things on screen** in React Native — centering co
 | `alignContent`  | `stretch`        | `flex-start`         |
 | Units           | px, rem, %, etc. | Unitless numbers     |
 
+## Understanding the axes
+
+**Main axis** = the direction children are laid out. In React Native, the default is `column` (vertical, top to bottom). Set `flexDirection: "row"` to go horizontal.
+
+**Cross axis** = the other direction. If main axis is vertical, cross axis is horizontal, and vice versa.
+
+`justifyContent` controls spacing along the **main axis**. `alignItems` controls alignment along the **cross axis**.
+
 ## The essential properties
 
 **Container properties** (on the parent View):

@@ -19,7 +19,7 @@ const [count, setCount] = useState(0);
 Cada llamada a `useState` te devuelve dos cosas:
 
 1. **El valor actual** (`count`) — úsalo para mostrar datos.
-2. **Una función para actualizarlo** (`setCount`) — llámala para cambiar el valor y volver a renderizar.
+2. **Una función para actualizarlo** (`setCount`) — llámala para cambiar el valor. React entonces vuelve a ejecutar tu función de componente — a esto se le llama un **re-render**.
 
 El argumento de `useState(0)` es el **valor inicial**, que solo se usa en el primer renderizado.
 
@@ -31,7 +31,7 @@ Cuando llamas a la función setter, React programa un nuevo renderizado con el v
 <Button title="Sumar 1" onPress={() => setCount(count + 1)} />
 ```
 
-Las actualizaciones de estado son **asíncronas**: el nuevo valor estará disponible en el _siguiente_ renderizado, no justo después de llamar al setter.
+El nuevo valor **no está disponible de inmediato** — aparece en el siguiente re-render, no justo después de llamar al setter.
 
 ## Patrones comunes en Expo
 

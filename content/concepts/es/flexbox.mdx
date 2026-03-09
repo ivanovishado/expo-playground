@@ -24,6 +24,14 @@ Flexbox es la forma de **acomodar elementos en pantalla** en React Native — ce
 | `alignContent`  | `stretch`                | `flex-start`                      |
 | Unidades        | px, rem, %, etc.         | Números sin unidad                |
 
+## Entendiendo los ejes
+
+**Eje principal** = la dirección en la que se acomodan los hijos. En React Native, por defecto es `column` (vertical, de arriba a abajo). Usa `flexDirection: "row"` para ir horizontal.
+
+**Eje cruzado** = la otra dirección. Si el eje principal es vertical, el eje cruzado es horizontal, y viceversa.
+
+`justifyContent` controla el espacio en el **eje principal**. `alignItems` controla la alineación en el **eje cruzado**.
+
 ## Las propiedades esenciales
 
 **Propiedades del contenedor** (en el View padre):

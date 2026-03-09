@@ -1,0 +1,106 @@
+---
+id: programming-basics
+title: Programming Basics
+category: basics
+order: 0
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Programming Basics
+
+Before diving into React Native, let's cover the building blocks you'll see in every file. Think of code as a **recipe** — the computer reads your instructions from top to bottom and follows them exactly.
+
+## Variables — named containers
+
+Variables hold values for later use, like labeling a box:
+
+```tsx
+const appName = "My First App"; // never changes
+let score = 0; // can change later
+score = score + 1;
+```
+
+Use `const` for values that stay the same, `let` for values that change.
+
+## Data types — kinds of values
+
+```tsx
+"Hello" // string — a piece of text (always in quotes)
+42 // number — for math
+true // boolean — yes or no (true / false)
+["a", "b", "c"] // array — a list of items
+{ name: "Alex", age: 25 } // object — a group of named values
+```
+
+## Functions — reusable instructions
+
+A function is a set of steps you can run whenever you want — like saving a recipe to cook again later:
+
+```tsx
+// Regular function
+function greet(name) {
+  return "Hello, " + name;
+}
+
+// Arrow function (shorter syntax, same idea)
+const greet = (name) => {
+  return "Hello, " + name;
+};
+```
+
+The values you pass in (`name`) are called **parameters**. The value that comes back is the **return value**.
+
+## Curly braces — three jobs
+
+Curly braces `{}` do three different things depending on where they appear:
+
+```tsx
+// 1. Group code inside a function body
+function greet() {
+  return "Hi!";
+}
+
+// 2. Create an object
+const user = { name: "Alex", age: 25 };
+
+// 3. Embed JavaScript inside JSX
+<Text>{user.name}</Text>;
+```
+
+## Destructuring — handy shortcuts
+
+Pull values out of objects or arrays in one step:
+
+```tsx
+// Object destructuring
+const { name, age } = user; // instead of user.name, user.age
+
+// Array destructuring
+const [first, second] = ["a", "b"]; // first = "a", second = "b"
+```
+
+You'll see this everywhere in React — like `const [count, setCount] = useState(0)`.
+
+## Template literals — text with expressions
+
+Use backticks and `${}` to mix text and values:
+
+```tsx
+const greeting = `Hello, ${name}! You are ${age} years old.`;
+```
+
+## Ternary operator — one-line if/else
+
+A compact way to pick between two values:
+
+```tsx
+const message = isLoggedIn ? "Welcome back!" : "Please sign in";
+```
+
+Read it as: "**if** isLoggedIn **then** 'Welcome back!' **else** 'Please sign in'."
+
+## Semicolons
+
+You'll see semicolons (`;`) at the end of some lines. In JavaScript they're optional — the language adds them automatically. Don't stress about them.
+
+> **You now know the basics!** Everything in React Native builds on these ideas. When you see unfamiliar syntax, come back here to check.

@@ -1,0 +1,106 @@
+---
+id: programming-basics
+title: Fundamentos de Programación
+category: basics
+order: 0
+expoDocUrl: https://docs.expo.dev/get-started/start-developing/
+---
+
+# Fundamentos de Programación
+
+Antes de meternos de lleno a React Native, veamos los bloques básicos que vas a encontrar en todos los archivos. Piensa en el código como una **receta** — la computadora lee tus instrucciones de arriba a abajo y las sigue al pie de la letra.
+
+## Variables — contenedores con nombre
+
+Las variables guardan valores para usarlos después, como ponerle etiqueta a una caja:
+
+```tsx
+const appName = "Mi Primera App"; // nunca cambia
+let score = 0; // puede cambiar después
+score = score + 1;
+```
+
+Usa `const` para valores que no cambian, `let` para valores que sí van a cambiar.
+
+## Tipos de datos — tipos de valores
+
+```tsx
+"Hola" // string — un texto (siempre entre comillas)
+42 // number — para hacer cuentas
+true // boolean — sí o no (true / false)
+["a", "b", "c"] // array — una lista de elementos
+{ name: "Alex", age: 25 } // object — un grupo de valores con nombre
+```
+
+## Funciones — instrucciones reutilizables
+
+Una función es un conjunto de pasos que puedes ejecutar cuando quieras — como guardar una receta para cocinarla otra vez:
+
+```tsx
+// Función regular
+function greet(name) {
+  return "Hola, " + name;
+}
+
+// Arrow function (sintaxis más corta, misma idea)
+const greet = (name) => {
+  return "Hola, " + name;
+};
+```
+
+Los valores que le pasas (`name`) se llaman **parámetros**. El valor que regresa es el **valor de retorno**.
+
+## Llaves — tres usos
+
+Las llaves `{}` hacen tres cosas diferentes dependiendo de dónde aparezcan:
+
+```tsx
+// 1. Agrupar código dentro de una función
+function greet() {
+  return "¡Hola!";
+}
+
+// 2. Crear un objeto
+const user = { name: "Alex", age: 25 };
+
+// 3. Meter JavaScript dentro de JSX
+<Text>{user.name}</Text>;
+```
+
+## Desestructuración — atajos muy útiles
+
+Saca valores de objetos o arreglos en un solo paso:
+
+```tsx
+// Desestructuración de objeto
+const { name, age } = user; // en vez de user.name, user.age
+
+// Desestructuración de arreglo
+const [first, second] = ["a", "b"]; // first = "a", second = "b"
+```
+
+Esto lo vas a ver por todos lados en React — como en `const [count, setCount] = useState(0)`.
+
+## Template literals — texto con expresiones
+
+Usa backticks y `${}` para mezclar texto y valores:
+
+```tsx
+const greeting = `Hola, ${name}! Tienes ${age} años.`;
+```
+
+## Operador ternario — if/else en una línea
+
+Una forma compacta de elegir entre dos valores:
+
+```tsx
+const message = isLoggedIn ? "¡Bienvenido de vuelta!" : "Inicia sesión";
+```
+
+Léelo así: "**si** isLoggedIn **entonces** '¡Bienvenido de vuelta!' **si no** 'Inicia sesión'."
+
+## Punto y coma
+
+Vas a ver punto y coma (`;`) al final de algunas líneas. En JavaScript son opcionales — el lenguaje los agrega automáticamente. No te claves con eso.
+
+> **¡Ya conoces los fundamentos!** Todo en React Native se construye sobre estas ideas. Cuando veas sintaxis que no reconozcas, regresa aquí a checar.

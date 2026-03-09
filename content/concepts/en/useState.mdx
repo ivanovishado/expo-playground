@@ -19,7 +19,7 @@ const [count, setCount] = useState(0);
 Every `useState` call returns two things:
 
 1. **The current value** (`count`) — read this to display data.
-2. **A setter function** (`setCount`) — call this to update the value and re-render.
+2. **A setter function** (`setCount`) — call this to update the value. React then runs your component function again — this is called a **re-render**.
 
 The argument to `useState(0)` is the **initial value**, used only on the first render.
 
@@ -31,7 +31,7 @@ When you call the setter, React schedules a re-render with the new value:
 <Button title="Add 1" onPress={() => setCount(count + 1)} />
 ```
 
-State updates are **asynchronous** — the new value is available on the _next_ render, not immediately after calling the setter.
+The new value is **not available right away** — it shows up on the next re-render, not immediately after calling the setter.
 
 ## Common patterns in Expo
 

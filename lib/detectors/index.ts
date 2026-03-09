@@ -5,6 +5,10 @@ import { createJSXElementsVisitor } from "./jsx-elements";
 import { createHooksVisitor } from "./hooks";
 import { createStylesVisitor } from "./styles";
 import { createEventsVisitor } from "./events";
+import { createRNComponentsVisitor } from "./rn-components";
+import { createExportsVisitor } from "./exports";
+import { createPropsVisitor } from "./rn-props";
+import { createFlexboxVisitor } from "./rn-layout";
 
 /**
  * All concept detector visitor factories, aggregated in detection order.
@@ -18,4 +22,8 @@ export const detectorFactories: DetectorVisitor[] = [
   createHooksVisitor,
   createStylesVisitor,
   createEventsVisitor,
+  createRNComponentsVisitor,
+  createExportsVisitor,
+  createPropsVisitor,
+  createFlexboxVisitor,
 ];

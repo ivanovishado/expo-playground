@@ -234,6 +234,7 @@ export default function PlaygroundShell({
             <div className="flex-1 overflow-y-auto">
               <ConceptPanel
                 card={activeCard}
+                locale={locale}
                 onPrev={handlePrev}
                 onNext={handleNext}
                 hasPrev={activeIndex > 0}

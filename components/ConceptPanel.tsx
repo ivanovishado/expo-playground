@@ -1,10 +1,44 @@
 "use client";
 
-import type { ConceptCard } from "@/lib/types";
+import type { ConceptCard, Locale } from "@/lib/types";
 import { CATEGORY_CONFIG } from "@/lib/categories";
+
+const UI_TEXT: Record<
+  Locale,
+  {
+    emptyHeading: string;
+    emptyChipLabel: string;
+    emptyBefore: string;
+    emptyAfter: string;
+    prev: string;
+    next: string;
+    expoDocs: string;
+  }
+> = {
+  en: {
+    emptyHeading: "Learn as You Explore",
+    emptyChipLabel: "highlighted concept",
+    emptyBefore: "Click a",
+    emptyAfter: "in the code or pick a concept chip above to start learning!",
+    prev: "← Prev",
+    next: "Next →",
+    expoDocs: "Expo Docs ↗",
+  },
+  es: {
+    emptyHeading: "Aprende mientras exploras",
+    emptyChipLabel: "concepto resaltado",
+    emptyBefore: "Haz clic en un",
+    emptyAfter:
+      "en el código o elige un chip de concepto arriba para empezar a aprender.",
+    prev: "← Anterior",
+    next: "Siguiente →",
+    expoDocs: "Docs de Expo ↗",
+  },
+};
 
 interface ConceptPanelProps {
   card: ConceptCard | null;
+  locale?: Locale;
   onPrev: () => void;
   onNext: () => void;
   hasPrev: boolean;
@@ -13,11 +47,14 @@ interface ConceptPanelProps {
 
 export default function ConceptPanel({
   card,
+  locale = "en",
   onPrev,
   onNext,
   hasPrev,
   hasNext,
 }: ConceptPanelProps) {
+  const t = UI_TEXT[locale];
+
   if (!card) {
     return (
       <div className="flex h-full flex-col items-center justify-center p-8 text-center">
@@ -25,14 +62,14 @@ export default function ConceptPanel({
           📘
         </div>
         <h2 className="mb-1.5 text-base font-semibold text-gray-800">
-          Learn as You Explore
+          {t.emptyHeading}
         </h2>
         <p className="max-w-[220px] text-[13px] leading-relaxed text-gray-500">
-          Click a{" "}
+          {t.emptyBefore}{" "}
           <span className="rounded bg-blue-50 px-1 py-0.5 text-xs font-medium text-blue-600">
-            highlighted concept
+            {t.emptyChipLabel}
           </span>{" "}
-          in the code or pick a concept chip above to start learning!
+          {t.emptyAfter}
         </p>
       </div>
     );
@@ -78,7 +115,7 @@ export default function ConceptPanel({
             disabled={!hasPrev}
             className="rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-600 transition-colors duration-150 hover:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-300"
           >
-            ← Prev
+            {t.prev}
           </button>
           <button
             type="button"
@@ -86,7 +123,7 @@ export default function ConceptPanel({
             disabled={!hasNext}
             className="rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-600 transition-colors duration-150 hover:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-300"
           >
-            Next →
+            {t.next}
           </button>
         </div>
 
@@ -97,7 +134,7 @@ export default function ConceptPanel({
           className="rounded-md px-2 py-1 text-xs font-medium transition-colors duration-150 hover:underline"
           style={{ color: accentColor }}
         >
-          Expo Docs ↗
+          {t.expoDocs}
         </a>
       </div>
     </div>

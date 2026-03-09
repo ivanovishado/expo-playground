@@ -8,7 +8,7 @@ expoDocUrl: https://docs.expo.dev/get-started/start-developing/
 
 # useEffect Hook
 
-`useEffect` tells your component to **do something after it appears on screen** — like loading data from the internet, starting a timer, or listening for updates.
+`useEffect` tells your component to **do something after it appears on screen** — like loading data from the internet, starting a timer, or listening for updates. When React **mounts** your component (first appears on screen), that's when effects start running.
 
 ```tsx
 useEffect(() => {
@@ -28,7 +28,7 @@ useEffect(() => {
 
 // Runs when `count` changes
 useEffect(() => {
-  document.title = `Count: ${count}`;
+  console.log(`Count changed to: ${count}`);
 }, [count]);
 
 // Runs after EVERY render (usually a mistake)
@@ -39,7 +39,7 @@ useEffect(() => {
 
 ## Cleanup functions
 
-Return a function to clean up when the component unmounts or before re-running:
+Return a function to clean up when the component **unmounts** (removed from screen) or before re-running:
 
 ```tsx
 useEffect(() => {
@@ -50,7 +50,7 @@ useEffect(() => {
 }, []);
 ```
 
-This prevents **memory leaks** — a common source of bugs in mobile apps.
+This prevents **memory leaks** (keeps doing work for a component that's gone) — a common source of bugs in mobile apps.
 
 ## Common patterns in Expo
 

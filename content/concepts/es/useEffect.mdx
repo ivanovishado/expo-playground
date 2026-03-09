@@ -8,7 +8,7 @@ expoDocUrl: https://docs.expo.dev/get-started/start-developing/
 
 # Hook useEffect
 
-`useEffect` le dice a tu componente que **haga algo después de aparecer en pantalla** — como cargar datos de internet, iniciar un temporizador o escuchar actualizaciones.
+`useEffect` le dice a tu componente que **haga algo después de aparecer en pantalla** — como cargar datos de internet, iniciar un temporizador o escuchar actualizaciones. Cuando React **monta** tu componente (aparece por primera vez en pantalla), ahí es cuando los efectos empiezan a correr.
 
 ```tsx
 useEffect(() => {
@@ -28,7 +28,7 @@ useEffect(() => {
 
 // Se ejecuta cuando cambia `count`
 useEffect(() => {
-  document.title = `Cuenta: ${count}`;
+  console.log(`El conteo cambió a: ${count}`);
 }, [count]);
 
 // Se ejecuta después de CADA renderizado (generalmente es un error)
@@ -39,7 +39,7 @@ useEffect(() => {
 
 ## Funciones de limpieza
 
-Retorna una función para hacer limpieza cuando el componente se desmonta o antes de volver a ejecutar el efecto:
+Retorna una función para hacer limpieza cuando el componente se **desmonta** (se quita de la pantalla) o antes de volver a ejecutar el efecto:
 
 ```tsx
 useEffect(() => {
@@ -50,7 +50,7 @@ useEffect(() => {
 }, []);
 ```
 
-Esto previene **fugas de memoria** — una fuente común de bugs en apps móviles.
+Esto previene **fugas de memoria** (sigue haciendo trabajo para un componente que ya no existe) — una fuente común de bugs en apps móviles.
 
 ## Patrones comunes en Expo
 

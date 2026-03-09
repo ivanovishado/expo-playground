@@ -14,6 +14,24 @@ The playground has three columns:
 
 Under the hood, the editor code is parsed with Babel, walked with a single merged AST traversal, and each detected concept (imports, hooks, components, JSX elements, styles, events) is mapped to a clickable decoration in the editor.
 
+## Requirements
+
+### macOS
+
+- **Node.js** >= 24 (recommended: install via [nvm](https://github.com/nvm-sh/nvm) or [Homebrew](https://brew.sh))
+- **npm** >= 10 (ships with Node.js 24)
+- **Git**
+
+### Windows
+
+- **Node.js** >= 24 (recommended: install via [nvm-windows](https://github.com/coreybutler/nvm-windows) or the [official installer](https://nodejs.org))
+- **npm** >= 10 (ships with Node.js 24)
+- **Git** (recommended: [Git for Windows](https://gitforwindows.org))
+- Enable long paths if you encounter `ENAMETOOLONG` errors:
+  ```powershell
+  git config --global core.longpaths true
+  ```
+
 ## Getting Started
 
 ```bash

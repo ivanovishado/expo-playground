@@ -230,11 +230,13 @@ export default function PlaygroundShell({
               activeConceptId={activeConceptId}
               onConceptClick={handleConceptClick}
               cards={cardsMap}
+              locale={locale}
             />
             <div className="flex-1 overflow-y-auto">
               <ConceptPanel
                 card={activeCard}
                 locale={locale}
+                conceptCount={cardsMap.size}
                 onPrev={handlePrev}
                 onNext={handleNext}
                 hasPrev={activeIndex > 0}

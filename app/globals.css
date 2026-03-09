@@ -219,5 +219,9 @@
 body {
   font-family: var(--font-sans);
   background-color: #ffffff;
+}
+
+/* Prevent body scroll on the playground page (full-screen 3-column layout) */
+body:has(.playground-grid) {
   overflow: hidden;
 }

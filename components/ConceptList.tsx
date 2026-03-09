@@ -1,6 +1,12 @@
 "use client";
 
-import type { ConceptCard, DetectedConcept } from "@/lib/types";
+import Link from "next/link";
+import type { ConceptCard, DetectedConcept, Locale } from "@/lib/types";
+
+const BROWSE_ALL_TEXT: Record<Locale, string> = {
+  en: "Browse all →",
+  es: "Ver todos →",
+};
 
 const CATEGORY_STYLES: Record<
   string,
@@ -39,6 +45,7 @@ interface ConceptListProps {
   activeConceptId: string | null;
   onConceptClick: (conceptId: string) => void;
   cards: Map<string, ConceptCard>;
+  locale?: Locale;
 }
 
 export default function ConceptList({
@@ -46,6 +53,7 @@ export default function ConceptList({
   activeConceptId,
   onConceptClick,
   cards,
+  locale = "en",
 }: ConceptListProps) {
   // Deduplicate by conceptId and only show concepts that have a matching card
   const seen = new Set<string>();
@@ -66,7 +74,7 @@ export default function ConceptList({
   }
 
   return (
-    <div className="flex flex-wrap gap-1.5 border-b border-gray-100 px-4 py-3">
+    <div className="flex flex-wrap items-center gap-1.5 border-b border-gray-100 px-4 py-3">
       {uniqueConcepts.map((concept) => {
         const isActive = concept.conceptId === activeConceptId;
         const styles = CATEGORY_STYLES[concept.category] ?? DEFAULT_STYLE;
@@ -90,6 +98,12 @@ export default function ConceptList({
           </button>
         );
       })}
+      <Link
+        href={`/${locale}/concepts`}
+        className="rounded-full px-2 py-1 text-[10px] font-medium text-gray-400 transition-colors hover:text-blue-600"
+      >
+        {BROWSE_ALL_TEXT[locale] ?? BROWSE_ALL_TEXT.en}
+      </Link>
     </div>
   );
 }

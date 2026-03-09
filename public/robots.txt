@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.ivanovishado.dev/expo-playground/sitemap.xml

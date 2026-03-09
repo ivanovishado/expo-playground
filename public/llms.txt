@@ -1,0 +1,58 @@
+# Annotated Expo Playground
+
+> An educational tool that helps students understand Expo/React Native code through AST-detected concept highlights and guided walkthroughs.
+
+## What This Site Is
+
+The Annotated Expo Playground is an interactive learning tool for beginner developers. Students paste React Native/Expo code into a code editor, and the system automatically:
+
+1. Parses the code using AST (Abstract Syntax Tree) analysis
+2. Detects programming concepts (hooks, components, styling patterns, etc.)
+3. Highlights detected concepts directly in the code editor
+4. Provides guided educational walkthroughs for each concept
+
+## Content
+
+The site contains tutorials for 18 React Native/Expo concepts organized into 4 categories:
+
+### Basics
+- Import statements
+- Component functions
+- JSX syntax
+- Props
+- Export default
+- Programming basics
+- View
+- Text
+- Image
+- ScrollView
+- Touchable components
+
+### Hooks
+- useState
+- useEffect
+
+### Styling
+- StyleSheet
+- Inline styles
+- Flexbox layout
+
+### Events
+- onPress
+- onChangeText
+
+Each concept tutorial includes:
+- Explanation of the concept for beginners
+- Code examples in TypeScript/TSX
+- Common patterns in Expo/React Native
+- Links to official Expo documentation
+
+## Languages
+
+Content is available in:
+- English (complete)
+- Spanish (complete)
+
+## Technology
+
+Built with Next.js, CodeMirror 6, Babel AST analysis, and Snack SDK for live preview.

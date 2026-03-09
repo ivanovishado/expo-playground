@@ -39,8 +39,18 @@ Annotated Expo Playground is an **educational tool that helps beginner students 
 
 ```
 app/
-  layout.tsx                      # Root layout
-  page.tsx                        # Main playground page (client component)
+  globals.css                     # Shared styles (imported by both layouts)
+  sitemap.ts                      # Static XML sitemap (locale × slug matrix)
+  (playground)/
+    layout.tsx                    # Root layout A (lang="en", playground metadata)
+    page.tsx                      # Main playground page (client component)
+  (content)/
+    [locale]/
+      layout.tsx                  # Root layout B (lang={locale}, fonts)
+      concepts/
+        page.tsx                  # Locale-aware concept index (server, SEO)
+        [slug]/
+          page.tsx                # Locale-aware concept detail (server, SEO)
 components/
   PlaygroundShell.tsx             # 3-column layout orchestrator
   CodeEditor.tsx                  # CodeMirror + clickable concept highlights
@@ -51,6 +61,7 @@ components/
 lib/
   analyzer.ts                     # Babel AST → DetectedConcept[] (single merged traversal)
   categories.ts                   # Centralized category config (colors, labels)
+  seo.ts                          # SEO constants + URL helpers (contentUrl, hreflangAlternates)
   detectors/                      # Concept detector visitor factories
     imports.ts
     hooks.ts
@@ -60,12 +71,12 @@ lib/
     events.ts
     index.ts                      # Aggregates all visitor factories
     utils.ts                      # Shared helpers (toConceptLocation)
-  concept-loader.ts               # Loads MDX concept cards
+  concept-loader.ts               # Loads MDX concept cards + getAllConceptSlugs
   codemirror-decorations.ts       # DetectedConcept[] → CM decorations
   types.ts                        # Shared types
 content/
   concepts/                       # MDX concept cards, organized by locale
-    en/                           # English (default) — 17 MDX files
+    en/                           # English (default) — 18 MDX files
       import.mdx
       component-function.mdx
       jsx.mdx
@@ -73,19 +84,24 @@ content/
       useEffect.mdx
       stylesheet.mdx
       ...
-    es/                           # Spanish translations (partial — falls back to English)
+    es/                           # Spanish translations (complete)
       import.mdx
       useState.mdx
       view.mdx
+      ...
   examples/                       # Pre-loaded example apps
     counter.ts
     todo-list.ts
     profile-card.ts
+public/
+  robots.txt                      # Crawler rules + sitemap reference
+  llms.txt                        # AI crawler content description
 ```
 
 ### Key Patterns
 
-- **Client-heavy architecture** — The main playground page is a client component orchestrating CodeMirror, Snack SDK, and the concept panel. Server components are used for layout and static content only.
+- **Route groups for i18n** — Two route groups: `(playground)` with `lang="en"` for the interactive tool, and `(content)/[locale]` with dynamic `lang={locale}` for SEO content pages. Each has its own root layout with `<html>` element, enabling different `lang` attributes per route. Concept pages live at `/{locale}/concepts/{slug}` (e.g., `/en/concepts/useState`, `/es/concepts/useState`) with hreflang alternates.
+- **Client-heavy playground, server-rendered content pages** — The main playground page is a client component orchestrating CodeMirror, Snack SDK, and the concept panel. Concept tutorial pages (`/{locale}/concepts/[slug]`) are server components that render MDX as static HTML for SEO. Adding a new concept MDX file auto-generates pages for all supported locales via `generateStaticParams`.
 - **AST-driven highlights** — `@babel/parser` parses student code, detectors export visitor factories that are merged via `traverse.visitors.merge()` into a single AST traversal, and CodeMirror decorations render clickable highlights via a `StateField`/`StateEffect` pattern.
 - **MDX concept cards** — Educational content stored as MDX files with frontmatter (id, title, category, color, expoDocUrl). Loaded via `next-mdx-remote`.
 - **Color-coded categories** — basics=blue, hooks=purple, styling=green, events=orange. Centralized in `lib/categories.ts`; CodeMirror decorations use a generic `.cm-concept` class with `--concept-color` CSS variable.
@@ -228,8 +244,11 @@ At the beginning of every subagent prompt, include:
 
 | File | Purpose |
 |------|---------|
-| `app/layout.tsx` | Root layout (providers, fonts, global styles) |
-| `app/page.tsx` | Main playground page (client component orchestrator) |
+| `app/(playground)/layout.tsx` | Playground root layout (lang="en", fonts, global styles) |
+| `app/(playground)/page.tsx` | Main playground page (client component orchestrator) |
+| `app/(content)/[locale]/layout.tsx` | Content root layout (lang={locale}, fonts) |
+| `app/(content)/[locale]/concepts/page.tsx` | Locale-aware concept index (server, SEO) |
+| `app/(content)/[locale]/concepts/[slug]/page.tsx` | Locale-aware concept detail (server, SEO) |
 | `components/PlaygroundShell.tsx` | 3-column layout |
 | `components/CodeEditor.tsx` | CodeMirror 6 + clickable decorations |
 | `components/ConceptPanel.tsx` | Concept walkthrough + MDX rendering |
@@ -242,6 +261,10 @@ At the beginning of every subagent prompt, include:
 | `components/LanguageToggle.tsx` | Locale switcher (segmented control) |
 | `content/concepts/{locale}/*.mdx` | Educational concept cards (per locale, English fallback) |
 | `content/examples/*.ts` | Pre-loaded example apps |
+| `lib/seo.ts` | SEO constants + URL helpers (contentUrl, hreflangAlternates) |
+| `app/sitemap.ts` | Static XML sitemap (locale × slug matrix, hreflang alternates) |
+| `public/robots.txt` | Crawler rules |
+| `public/llms.txt` | AI crawler content description |
 
 ## 12. Quality Gates
 

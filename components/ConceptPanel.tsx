@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { ConceptCard, Locale } from "@/lib/types";
 import { CATEGORY_CONFIG } from "@/lib/categories";
 
@@ -10,6 +11,9 @@ const UI_TEXT: Record<
     emptyChipLabel: string;
     emptyBefore: string;
     emptyAfter: string;
+    browseTutorials: string;
+    browseTutorialsDesc: string;
+    readFullTutorial: string;
     prev: string;
     next: string;
     expoDocs: string;
@@ -20,6 +24,9 @@ const UI_TEXT: Record<
     emptyChipLabel: "highlighted concept",
     emptyBefore: "Click a",
     emptyAfter: "in the code or pick a concept chip above to start learning!",
+    browseTutorials: "Browse all tutorials",
+    browseTutorialsDesc: "Read {count} concept guides with examples",
+    readFullTutorial: "Read full tutorial →",
     prev: "← Prev",
     next: "Next →",
     expoDocs: "Expo Docs ↗",
@@ -30,6 +37,9 @@ const UI_TEXT: Record<
     emptyBefore: "Haz clic en un",
     emptyAfter:
       "en el código o elige un chip de concepto arriba para empezar a aprender.",
+    browseTutorials: "Ver todos los tutoriales",
+    browseTutorialsDesc: "Lee {count} guías de conceptos con ejemplos",
+    readFullTutorial: "Leer tutorial completo →",
     prev: "← Anterior",
     next: "Siguiente →",
     expoDocs: "Docs de Expo ↗",
@@ -39,6 +49,7 @@ const UI_TEXT: Record<
 interface ConceptPanelProps {
   card: ConceptCard | null;
   locale?: Locale;
+  conceptCount?: number;
   onPrev: () => void;
   onNext: () => void;
   hasPrev: boolean;
@@ -48,6 +59,7 @@ interface ConceptPanelProps {
 export default function ConceptPanel({
   card,
   locale = "en",
+  conceptCount = 0,
   onPrev,
   onNext,
   hasPrev,
@@ -71,6 +83,15 @@ export default function ConceptPanel({
           </span>{" "}
           {t.emptyAfter}
         </p>
+        <Link
+          href={`/${locale}/concepts`}
+          className="mt-5 rounded-lg border border-gray-200 px-4 py-2.5 text-xs font-medium text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-50"
+        >
+          <span className="block font-semibold">{t.browseTutorials}</span>
+          <span className="mt-0.5 block text-gray-400">
+            {t.browseTutorialsDesc.replace("{count}", String(conceptCount))}
+          </span>
+        </Link>
       </div>
     );
   }
@@ -104,6 +125,16 @@ export default function ConceptPanel({
       {/* MDX Content */}
       <div className="concept-prose flex-1 overflow-y-auto px-4 py-4 text-[13px] leading-relaxed text-gray-700">
         {card.content}
+      </div>
+
+      {/* Full tutorial link */}
+      <div className="border-t border-gray-100 px-4 py-2">
+        <Link
+          href={`/${locale}/concepts/${card.id}`}
+          className="block rounded-md bg-gray-50 px-3 py-2 text-center text-xs font-medium text-blue-600 transition-colors hover:bg-gray-100"
+        >
+          {t.readFullTutorial}
+        </Link>
       </div>
 
       {/* Footer: navigation + docs link */}

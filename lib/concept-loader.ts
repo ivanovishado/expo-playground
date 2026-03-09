@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { compileMDX } from "next-mdx-remote/rsc";
@@ -14,6 +15,27 @@ interface ConceptFrontmatter {
 }
 
 const CONCEPTS_DIR = join(process.cwd(), "content", "concepts");
+
+/**
+ * Returns all concept slugs derived from English MDX filenames.
+ * Used by generateStaticParams to pre-build concept pages.
+ */
+export async function getAllConceptSlugs(): Promise<string[]> {
+  const localeDir = join(CONCEPTS_DIR, "en");
+  const files = await readdir(localeDir);
+  return files
+    .filter((f) => f.endsWith(".mdx"))
+    .map((f) => f.replace(/\.mdx$/, ""));
+}
+
+/**
+ * React.cache-wrapped version of loadConceptCard.
+ * Deduplicates calls with the same (id, locale) within a single server render,
+ * avoiding double MDX compilation when both generateMetadata and the page call it.
+ */
+export const loadConceptCardCached = cache(
+  (id: string, locale: Locale = DEFAULT_LOCALE) => loadConceptCard(id, locale)
+);
 
 export async function loadConceptCard(
   id: string,
@@ -44,7 +66,7 @@ export async function loadConceptCard(
   }
 }
 
-async function loadCardsForLocale(
+export async function loadCardsForLocale(
   locale: Locale
 ): Promise<Map<string, ConceptCard>> {
   const cards = new Map<string, ConceptCard>();

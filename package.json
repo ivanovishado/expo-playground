@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
     "@babel/parser": "7.29.0",
@@ -28,6 +29,15 @@
     "snack-sdk": "6.6.1",
     "tailwindcss": "4.2.1"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,mjs,json,md,css}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "4.2.1",
     "@types/babel__traverse": "7.28.0",
@@ -36,6 +46,8 @@
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
     "eslint-config-next": "16.1.6",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
     "prettier": "3.8.1",
     "typescript": "5.9.3"
   }

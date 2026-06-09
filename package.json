@@ -17,7 +17,7 @@
     "@babel/traverse": "7.29.7",
     "@codemirror/lang-javascript": "6.2.5",
     "@codemirror/state": "6.6.0",
-    "@codemirror/view": "6.43.0",
+    "@codemirror/view": "6.43.1",
     "@uiw/react-codemirror": "4.25.10",
     "next": "16.2.7",
     "next-mdx-remote": "6.0.0",

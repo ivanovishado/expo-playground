@@ -1,4 +1,4 @@
-import type { TraverseOptions } from "@babel/traverse";
+import type { Visitor } from "@babel/traverse";
 import type { DetectedConcept } from "@/lib/types";
 import { toConceptLocation } from "./utils";
 
@@ -12,9 +12,7 @@ const HOOK_MAP: Record<string, { conceptId: string; label: string }> = {
  * Creates a visitor that detects React hook calls: useState and useEffect.
  * Matches direct calls like `useState(...)` and `useEffect(...)`.
  */
-export function createHooksVisitor(
-  concepts: DetectedConcept[]
-): TraverseOptions {
+export function createHooksVisitor(concepts: DetectedConcept[]): Visitor {
   return {
     CallExpression(path) {
       const { node } = path;

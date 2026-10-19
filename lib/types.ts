@@ -74,4 +74,4 @@ export interface ExampleApp {
  */
 export type DetectorVisitor = (
   concepts: DetectedConcept[]
-) => import("@babel/traverse").TraverseOptions;
+) => import("@babel/traverse").Visitor;

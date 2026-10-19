@@ -1,4 +1,4 @@
-import type { TraverseOptions } from "@babel/traverse";
+import type { Visitor } from "@babel/traverse";
 import type { DetectedConcept } from "@/lib/types";
 import { toConceptLocation } from "./utils";
 
@@ -14,9 +14,7 @@ const EVENT_PROPS: Record<string, string> = {
  * Creates a visitor that detects event handler JSX attributes
  * like onPress, onChangeText, etc.
  */
-export function createEventsVisitor(
-  concepts: DetectedConcept[]
-): TraverseOptions {
+export function createEventsVisitor(concepts: DetectedConcept[]): Visitor {
   return {
     JSXAttribute(path) {
       const { node } = path;

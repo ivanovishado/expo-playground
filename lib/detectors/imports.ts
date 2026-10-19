@@ -1,4 +1,4 @@
-import type { TraverseOptions } from "@babel/traverse";
+import type { Visitor } from "@babel/traverse";
 import type { DetectedConcept } from "@/lib/types";
 import { toConceptLocation } from "./utils";
 
@@ -6,9 +6,7 @@ import { toConceptLocation } from "./utils";
  * Creates a visitor that detects import statements.
  * Identifies both `import ... from '...'` and `import '...'` forms.
  */
-export function createImportsVisitor(
-  concepts: DetectedConcept[]
-): TraverseOptions {
+export function createImportsVisitor(concepts: DetectedConcept[]): Visitor {
   return {
     ImportDeclaration(path) {
       const { node } = path;

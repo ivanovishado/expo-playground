@@ -2,10 +2,8 @@ import { SUPPORTED_LOCALES } from "@/lib/types";
 
 /**
  * Centralized SEO constants.
- * When a custom domain is configured, update SITE_URL here
- * and remove basePath from next.config.ts.
  */
-export const SITE_URL = "https://www.ivanovishado.dev/expo-playground";
+export const SITE_URL = "https://expo-playground.ivanovishado.dev";
 export const SITE_NAME = "Annotated Expo Playground";
 export const SITE_DESCRIPTION =
   "An educational tool that helps students understand Expo/React Native code through AST-detected concept highlights and guided walkthroughs.";

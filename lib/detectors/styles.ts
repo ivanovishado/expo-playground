@@ -1,4 +1,4 @@
-import type { TraverseOptions } from "@babel/traverse";
+import type { Visitor } from "@babel/traverse";
 import type { DetectedConcept } from "@/lib/types";
 import { toConceptLocation } from "./utils";
 
@@ -7,9 +7,7 @@ import { toConceptLocation } from "./utils";
  * - `StyleSheet.create(...)` calls
  * - Inline `style={{ ... }}` JSX attributes
  */
-export function createStylesVisitor(
-  concepts: DetectedConcept[]
-): TraverseOptions {
+export function createStylesVisitor(concepts: DetectedConcept[]): Visitor {
   return {
     CallExpression(path) {
       const { node } = path;

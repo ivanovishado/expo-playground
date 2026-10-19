@@ -1,15 +1,26 @@
 version: 2
 updates:
   # Node.js dependencies (npm)
+  # Version updates run monthly; security updates are raised as soon as an
+  # advisory is published, regardless of this schedule.
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
     groups:
       dev-dependencies:
         dependency-type: "development"
       production-dependencies:
         dependency-type: "production"
+      security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+    ignore:
+      # typescript-eslint 8.x supports typescript <6.1.0. Remove once it
+      # supports TypeScript 7.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   # GitHub Actions
   - package-ecosystem: "github-actions"

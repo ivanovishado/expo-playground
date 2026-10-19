@@ -1,4 +1,4 @@
-import type { TraverseOptions } from "@babel/traverse";
+import type { Visitor } from "@babel/traverse";
 import type { DetectedConcept } from "@/lib/types";
 import { toConceptLocation } from "./utils";
 
@@ -19,9 +19,7 @@ const FLEXBOX_KEYS = new Set([
  * Creates a visitor that detects flexbox layout usage by finding
  * flexbox-specific style properties in inline styles and StyleSheet.create.
  */
-export function createFlexboxVisitor(
-  concepts: DetectedConcept[]
-): TraverseOptions {
+export function createFlexboxVisitor(concepts: DetectedConcept[]): Visitor {
   let detected = false;
 
   return {

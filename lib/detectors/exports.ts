@@ -1,13 +1,11 @@
-import type { TraverseOptions } from "@babel/traverse";
+import type { Visitor } from "@babel/traverse";
 import type { DetectedConcept } from "@/lib/types";
 import { toConceptLocation } from "./utils";
 
 /**
  * Creates a visitor that detects `export default` declarations.
  */
-export function createExportsVisitor(
-  concepts: DetectedConcept[]
-): TraverseOptions {
+export function createExportsVisitor(concepts: DetectedConcept[]): Visitor {
   return {
     ExportDefaultDeclaration(path) {
       const loc = path.node.loc;

@@ -1,4 +1,4 @@
-import type { NodePath, TraverseOptions } from "@babel/traverse";
+import type { NodePath, Visitor } from "@babel/traverse";
 import type { Node } from "@babel/types";
 import type { DetectedConcept } from "@/lib/types";
 import { toConceptLocation } from "./utils";
@@ -8,9 +8,7 @@ import { toConceptLocation } from "./utils";
  * Handles function declarations, arrow functions assigned to variables,
  * and default-exported arrow functions.
  */
-export function createComponentsVisitor(
-  concepts: DetectedConcept[]
-): TraverseOptions {
+export function createComponentsVisitor(concepts: DetectedConcept[]): Visitor {
   return {
     FunctionDeclaration(path) {
       if (!returnsJSX(path) || !path.node.id) return;

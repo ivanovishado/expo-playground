@@ -1,4 +1,4 @@
-import type { TraverseOptions } from "@babel/traverse";
+import type { Visitor } from "@babel/traverse";
 import type { DetectedConcept, ConceptCategory } from "@/lib/types";
 import { toConceptLocation } from "./utils";
 
@@ -23,7 +23,7 @@ const COMPONENT_MAP: Record<
  */
 export function createRNComponentsVisitor(
   concepts: DetectedConcept[]
-): TraverseOptions {
+): Visitor {
   return {
     JSXOpeningElement(path) {
       const { node } = path;

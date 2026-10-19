@@ -1,4 +1,4 @@
-import type { TraverseOptions } from "@babel/traverse";
+import type { Visitor } from "@babel/traverse";
 import type { DetectedConcept } from "@/lib/types";
 import { toConceptLocation } from "./utils";
 
@@ -6,9 +6,7 @@ import { toConceptLocation } from "./utils";
  * Creates a visitor that detects JSX elements (e.g. <View>, <Text>, <Pressable>).
  * Only detects opening tags to avoid duplicate detections for self-closing elements.
  */
-export function createJSXElementsVisitor(
-  concepts: DetectedConcept[]
-): TraverseOptions {
+export function createJSXElementsVisitor(concepts: DetectedConcept[]): Visitor {
   return {
     JSXOpeningElement(path) {
       const { node } = path;

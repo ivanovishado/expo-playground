@@ -1,4 +1,4 @@
-import type { TraverseOptions } from "@babel/traverse";
+import type { Visitor } from "@babel/traverse";
 import type { DetectedConcept } from "@/lib/types";
 import { toConceptLocation } from "./utils";
 
@@ -17,9 +17,7 @@ const EXCLUDED_ATTRIBUTES = new Set([
  * Creates a visitor that detects JSX props (attributes that aren't
  * style, key, ref, or known event handlers).
  */
-export function createPropsVisitor(
-  concepts: DetectedConcept[]
-): TraverseOptions {
+export function createPropsVisitor(concepts: DetectedConcept[]): Visitor {
   return {
     JSXAttribute(path) {
       const { node } = path;
